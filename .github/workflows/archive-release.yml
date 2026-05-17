@@ -1,0 +1,88 @@
+name: Archive Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      label:
+        description: 'Optional release label (e.g. "Issue 7 — May 2026"). Leave blank to auto-detect from content.json.'
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate release metadata
+        id: meta
+        run: |
+          python3 - <<'EOF'
+          import json, os, datetime
+
+          with open("content.json", encoding="utf-8") as f:
+              data = json.load(f)
+
+          issues = data.get("issues", [])
+          articles = {a["id"]: a for a in data.get("articles", [])}
+
+          label = os.environ.get("INPUT_LABEL", "").strip()
+
+          # Use the most recent issue for title and changelog
+          latest = issues[-1] if issues else None
+
+          if label:
+              title = label
+          elif latest:
+              title = f"{latest['title']} — {latest['date']}"
+          else:
+              title = "Snapshot"
+
+          date = datetime.date.today().isoformat()
+
+          # Build tag: prefer issue-based, fall back to date
+          if latest and not label:
+              tag = latest["id"] + "-" + date
+          else:
+              tag = "archive-" + date
+
+          # Build release notes
+          notes = [f"**The Railsplitter** — archived snapshot `{date}`\n"]
+
+          if latest:
+              issue_articles = [
+                  a for a in data.get("articles", [])
+                  if a.get("issueId") == latest["id"] and a.get("published")
+              ]
+              if issue_articles:
+                  notes.append(f"### Articles in {latest['title']}")
+                  for a in issue_articles:
+                      notes.append(f"- **{a['title']}** — *{a.get('author', '')}* ({a.get('section', '')})")
+                  notes.append("")
+
+          notes.append("Source code and assets are attached below.")
+
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+              out.write(f"tag={tag}\n")
+              out.write(f"title={title}\n")
+
+          with open("/tmp/release_notes.md", "w") as f:
+              f.write("\n".join(notes))
+
+          print(f"Tag:   {tag}")
+          print(f"Title: {title}")
+          EOF
+        env:
+          INPUT_LABEL: ${{ github.event.inputs.label }}
+
+      - name: Create release
+        run: |
+          gh release create "${{ steps.meta.outputs.tag }}" \
+            --title "${{ steps.meta.outputs.title }}" \
+            --notes-file /tmp/release_notes.md \
+            --latest=false \
+            content.json
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

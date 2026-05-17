@@ -1,0 +1,64 @@
+name: Photo Purge
+
+on:
+  # Run automatically on the 1st of every month
+  schedule:
+    - cron: '0 9 1 * *'
+  # Also allow manual runs with optional dry-run override
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (print what would be deleted without deleting)'
+        type: boolean
+        default: true
+      months:
+        description: 'Delete orphans older than this many months (default: 6)'
+        default: '6'
+
+permissions:
+  contents: write
+
+jobs:
+  purge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history needed so git log can find when each photo was added
+          fetch-depth: 0
+
+      - name: Purge orphaned photos
+        id: purge
+        run: |
+          MONTHS="${{ github.event.inputs.months || '6' }}"
+          DRY_RUN="${{ github.event.inputs.dry_run }}"
+
+          FLAGS="--months $MONTHS"
+
+          # Scheduled runs always do the real purge.
+          # Manual runs default to dry-run unless the user unchecked it.
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "Scheduled run — performing real purge."
+          elif [ "$DRY_RUN" = "true" ]; then
+            FLAGS="$FLAGS --dry-run"
+            echo "Dry run mode."
+          fi
+
+          python3 .github/scripts/purge_photos.py content.json $FLAGS
+
+      - name: Commit deleted photos
+        if: github.event_name == 'schedule' || github.event.inputs.dry_run == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Stage only deletions inside photos/
+          git add -u photos/
+
+          if git diff --staged --quiet; then
+            echo "No files were deleted — nothing to commit."
+          else
+            DELETED=$(git diff --staged --name-only | wc -l | tr -d ' ')
+            git commit -m "chore: purge ${DELETED} orphaned photo(s) older than ${{ github.event.inputs.months || '6' }} months"
+            git push
+          fi

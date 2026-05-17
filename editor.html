@@ -152,6 +152,34 @@ button{cursor:pointer;font-family:inherit;font-size:13px;}
 .photo-preview{width:100%;height:90px;object-fit:cover;border-radius:5px;margin-bottom:6px;display:block;}
 .photo-ph-strip{width:100%;height:60px;background:#e8e5e0;border-radius:5px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#aaa;}
 .photo-remove{font-size:11px;color:#b91c1c;cursor:pointer;background:none;border:none;padding:0;text-decoration:underline;}
+
+/* ── Workflow status view ── */
+.status-loading{text-align:center;padding:32px;color:#888;}
+.wf-row{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid #f0ede8;}
+.wf-row:last-of-type{border-bottom:none;}
+.wf-row--fail{background:#fff9f9;margin:0 -20px;padding:11px 20px;}
+.wf-row--fail + .wf-detail{margin:0 -20px;padding:10px 20px 12px 30px;}
+.wf-dot{width:9px;height:9px;border-radius:50%;margin-top:4px;flex-shrink:0;}
+.wf-dot--pass{background:#22c55e;}
+.wf-dot--fail{background:#ef4444;}
+.wf-dot--running{background:#f59e0b;animation:wf-pulse 1s ease-in-out infinite;}
+.wf-dot--none{background:#d1d5db;}
+@keyframes wf-pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+.wf-info{flex:1;min-width:0;}
+.wf-name{font-size:13px;font-weight:500;color:#1a1916;}
+.wf-meta{font-size:11px;color:#888;margin-top:3px;display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.wf-badge{display:inline-block;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:600;letter-spacing:.02em;}
+.wf-badge--pass{background:#dcfce7;color:#166534;}
+.wf-badge--fail{background:#fee2e2;color:#b91c1c;}
+.wf-badge--running{background:#fff7ed;color:#c2410c;}
+.wf-badge--none{background:#f3f4f6;color:#6b7280;}
+.wf-ext-link{font-size:11px;color:#bbb;margin-left:5px;text-decoration:none;vertical-align:middle;}
+.wf-ext-link:hover{color:#C85500;}
+.wf-detail{background:#fff5f5;border-left:3px solid #fca5a5;font-size:12px;padding:10px 20px 12px 30px;}
+.wf-detail-job{color:#7f1d1d;font-weight:600;margin-bottom:5px;}
+.wf-detail-step{color:#991b1b;padding-left:10px;margin-bottom:3px;}
+.wf-detail-step::before{content:"✗  ";}
+.wf-detail-log{background:#1c1917;color:#e7e3de;padding:10px 14px;border-radius:5px;font-size:11px;line-height:1.65;margin-top:8px;overflow-x:auto;white-space:pre-wrap;word-break:break-all;max-height:200px;overflow-y:auto;}
 </style>
 </head>
 <body>
@@ -190,6 +218,10 @@ button{cursor:pointer;font-family:inherit;font-size:13px;}
         Staff
       </button>
       <div class="nav-label">System</div>
+      <button class="nav-item" data-view="status">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+        CI Status
+      </button>
       <button class="nav-item" data-view="settings">
         <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>
         Settings
@@ -1535,6 +1567,150 @@ App.views.breaking = {
         App.handleApiError(err);
       });
     });
+  }
+};
+
+// ── CI Status view ─────────────────────────────────────────────────────────
+App.views.status = {
+  _timer: null,
+
+  render: function() {
+    clearInterval(App.views.status._timer);
+    App.views.status._timer = null;
+    document.getElementById('topbarTitle').textContent = 'CI Status';
+    document.getElementById('topbarActions').innerHTML =
+      '<button class="btn btn-secondary" onclick="App.views.status.load()">&#8635; Refresh</button>';
+    document.getElementById('contentArea').innerHTML =
+      '<div style="max-width:700px;">' +
+        '<div class="card">' +
+          '<div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">' +
+            'GitHub Actions' +
+            '<span id="wfTimestamp" style="font-weight:400;text-transform:none;letter-spacing:0;color:#bbb;font-size:11px;"></span>' +
+          '</div>' +
+          '<div id="wfList"><div class="status-loading"><span class="spinner"></span> Loading&hellip;</div></div>' +
+        '</div>' +
+      '</div>';
+    App.views.status.load();
+  },
+
+  load: function() {
+    var list = document.getElementById('wfList');
+    if (!list) return;
+    if (!App.state.token) {
+      list.innerHTML = '<div class="notice notice-warn" style="margin:0;">Sign in with a GitHub token in <strong>Settings</strong> to view workflow status.</div>';
+      return;
+    }
+    var base = App.github.apiBase + '/repos/' + App.REPO_OWNER + '/' + App.REPO_NAME;
+    fetch(base + '/actions/workflows?per_page=50', { headers: App.github.headers() })
+      .then(function(r) {
+        if (r.status === 403) throw new Error('GitHub API rate limit reached — wait a moment and refresh.');
+        if (r.status === 401) throw new Error('Token missing Actions read permission.');
+        if (!r.ok) throw new Error('GitHub API error ' + r.status);
+        return r.json();
+      })
+      .then(function(data) {
+        var wfs = (data.workflows || []).sort(function(a, b) { return a.name.localeCompare(b.name); });
+        if (!wfs.length) {
+          list.innerHTML = '<p style="color:#888;padding:8px 0;font-size:13px;">No workflows found.</p>';
+          return;
+        }
+        return Promise.all(wfs.map(function(wf) {
+          return fetch(base + '/actions/workflows/' + wf.id + '/runs?per_page=1&branch=main', {
+            headers: App.github.headers()
+          }).then(function(r) { return r.json(); })
+            .then(function(d) { return { wf: wf, run: (d.workflow_runs || [])[0] || null }; });
+        }));
+      })
+      .then(function(items) {
+        if (!items) return;
+        // Fetch failed job details (steps + attempt to get log excerpt)
+        return Promise.all(items.map(function(item) {
+          if (!item.run || item.run.conclusion !== 'failure') return Promise.resolve(item);
+          return fetch(base + '/actions/runs/' + item.run.id + '/jobs', { headers: App.github.headers() })
+            .then(function(r) { return r.json(); })
+            .then(function(d) {
+              item.jobs = (d.jobs || []).filter(function(j) { return j.conclusion === 'failure'; });
+              return Promise.all(item.jobs.map(function(job) {
+                return fetch(base + '/actions/jobs/' + job.id + '/logs', { headers: App.github.headers() })
+                  .then(function(r) { return r.ok ? r.text() : null; })
+                  .then(function(t) { job._log = t; })
+                  .catch(function() { job._log = null; });
+              })).then(function() { return item; });
+            }).catch(function() { return item; });
+        }));
+      })
+      .then(function(items) {
+        if (!items) return;
+        var anyLive = items.some(function(i) {
+          return i.run && (i.run.status === 'in_progress' || i.run.status === 'queued');
+        });
+        clearInterval(App.views.status._timer);
+        if (anyLive) {
+          App.views.status._timer = setInterval(function() {
+            if (document.getElementById('wfList')) App.views.status.load();
+            else clearInterval(App.views.status._timer);
+          }, 30000);
+        }
+        var html = '';
+        items.forEach(function(item) { html += App.views.status.row(item); });
+        list.innerHTML = html || '<p style="color:#888;font-size:13px;">No workflows found.</p>';
+        var ts = document.getElementById('wfTimestamp');
+        if (ts) ts.textContent = 'Updated just now';
+      })
+      .catch(function(e) {
+        list.innerHTML = '<div class="notice notice-error" style="margin:0;">' + App.esc(e.message) + '</div>';
+      });
+  },
+
+  ago: function(iso) {
+    if (!iso) return '—';
+    var s = Math.floor((Date.now() - new Date(iso)) / 1000);
+    if (s < 60) return 'just now';
+    if (s < 3600) return Math.floor(s / 60) + 'm ago';
+    if (s < 86400) return Math.floor(s / 3600) + 'h ago';
+    return Math.floor(s / 86400) + 'd ago';
+  },
+
+  row: function(item) {
+    var wf = item.wf, run = item.run;
+    var conc = run ? run.conclusion : null;
+    var live = run && (run.status === 'in_progress' || run.status === 'queued');
+    var dot, bc, bt, meta;
+    if (!run)                { dot='wf-dot--none';    bc='wf-badge--none';    bt='No runs'; meta='Never run'; }
+    else if (live)           { dot='wf-dot--running'; bc='wf-badge--running'; bt='Running'; meta='Started ' + App.views.status.ago(run.run_started_at); }
+    else if (conc==='success'){dot='wf-dot--pass';    bc='wf-badge--pass';    bt='Passed';  meta=App.views.status.ago(run.updated_at); }
+    else if (conc==='failure'){dot='wf-dot--fail';    bc='wf-badge--fail';    bt='Failed';  meta=App.views.status.ago(run.updated_at); }
+    else                     { dot='wf-dot--none';    bc='wf-badge--none';    bt=conc||'?'; meta=App.views.status.ago(run&&run.updated_at); }
+    var extLink = run ? '<a class="wf-ext-link" href="' + App.esc(run.html_url) + '" target="_blank" title="View run on GitHub">&#8599;</a>' : '';
+    var detail = (conc === 'failure' && item.jobs && item.jobs.length) ? App.views.status.detail(item.jobs) : '';
+    return '<div class="wf-row' + (conc==='failure' ? ' wf-row--fail' : '') + '">' +
+        '<div class="wf-dot ' + dot + '"></div>' +
+        '<div class="wf-info">' +
+          '<span class="wf-name">' + App.esc(wf.name) + '</span>' + extLink +
+          '<div class="wf-meta"><span class="wf-badge ' + bc + '">' + bt + '</span> &middot; ' + meta + '</div>' +
+        '</div>' +
+      '</div>' + detail;
+  },
+
+  detail: function(jobs) {
+    var html = '<div class="wf-detail">';
+    jobs.forEach(function(job) {
+      html += '<div class="wf-detail-job">Job: ' + App.esc(job.name) + '</div>';
+      (job.steps || []).filter(function(s) { return s.conclusion === 'failure'; }).forEach(function(s) {
+        html += '<div class="wf-detail-step">' + App.esc(s.name) + '</div>';
+      });
+      if (job._log) {
+        var lines = job._log.split('\n')
+          .map(function(l) {
+            return l.replace(/\x1b\[[0-9;]*[mGKH]/g, '').replace(/^\d{4}-\d{2}-\d{2}T[\d:.]+Z /, '').trim();
+          })
+          .filter(function(l) {
+            return l && (/^(FAIL|ERROR):/.test(l) || /^\s+(articles|sections|issues|homepage|staff|breaking|\()/.test(l) || /^  /.test(l));
+          }).slice(0, 15);
+        if (lines.length) html += '<pre class="wf-detail-log">' + App.esc(lines.join('\n')) + '</pre>';
+      }
+    });
+    return html + '</div>';
   }
 };
 

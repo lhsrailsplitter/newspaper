@@ -218,7 +218,7 @@ button{cursor:pointer;font-family:inherit;font-size:13px;}
         Staff
       </button>
       <div class="nav-label">System</div>
-      <button class="nav-item" data-view="status">
+      <button class="nav-item" data-view="status" id="navCiStatus" style="display:none;">
         <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
         CI Status
       </button>
@@ -487,6 +487,7 @@ var App = {
         return;
       }
       document.getElementById('sidebarFooter').innerHTML = 'Signed in as <strong>@' + App.esc(user.login) + '</strong>';
+      document.getElementById('navCiStatus').style.display = '';
       return App.github.getContent().then(function() {
         App.router.navigate('articles');
       });
@@ -541,6 +542,7 @@ App.views.settings = {
         App.state.token = token;
         statusEl.innerHTML = '<span style="color:#166534;">✓ Connected as @' + App.esc(user.login) + '</span>';
         document.getElementById('sidebarFooter').innerHTML = 'Signed in as <strong>@' + App.esc(user.login) + '</strong>';
+        document.getElementById('navCiStatus').style.display = '';
         App.github.getContent().then(function() { App.router.navigate('articles'); }).catch(App.handleApiError);
       }).catch(function() {
         statusEl.innerHTML = '<span style="color:#b91c1c;">✗ Token invalid or no repo access.</span>';
@@ -564,6 +566,7 @@ App.views.settings = {
       clearBtn.addEventListener('click', function() {
         localStorage.removeItem('rs_token');
         App.state.token = null;
+        document.getElementById('navCiStatus').style.display = 'none';
         App.views.settings.render();
       });
     }

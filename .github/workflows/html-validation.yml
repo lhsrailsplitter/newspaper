@@ -1,0 +1,18 @@
+name: HTML Validation
+
+on:
+  push:
+    paths:
+      - '*.html'
+  pull_request:
+    paths:
+      - '*.html'
+
+jobs:
+  validate-html:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate HTML structure
+        run: python3 .github/scripts/validate_html.py *.html

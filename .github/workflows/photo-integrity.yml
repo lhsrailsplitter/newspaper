@@ -1,0 +1,20 @@
+name: Photo Integrity Check
+
+on:
+  push:
+    paths:
+      - content.json
+      - photos/**
+  pull_request:
+    paths:
+      - content.json
+      - photos/**
+
+jobs:
+  check-photos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check photo references and orphans
+        run: python3 .github/scripts/check_photos.py content.json

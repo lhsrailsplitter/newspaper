@@ -517,8 +517,9 @@ var App = {
 
     App.state.token = localStorage.getItem('rs_token');
 
+    document.getElementById('editorShell').setAttribute('data-unauthed', '');
+
     if (!App.state.token) {
-      document.getElementById('editorShell').setAttribute('data-unauthed', '');
       App.router.navigate('setup');
       return;
     }
@@ -529,6 +530,9 @@ var App = {
     App.auth.connect(App.state.token, function(state, detail) {
       if (state === 'error') {
         if (detail === 'no_push_access') {
+          localStorage.removeItem('rs_token');
+          App.state.token = null;
+          App.state.user  = null;
           document.getElementById('topbarTitle').textContent = 'Access Denied';
           document.getElementById('contentArea').innerHTML =
             '<div class="notice notice-error" style="max-width:480px;margin:40px auto;">' +

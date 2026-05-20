@@ -100,7 +100,6 @@ Seven automated workflows run on every relevant push or pull request.
 | Content Auto-Repair | `content-autorepair.yml` | Detects encoding corruption and auto-repairs with `ftfy`, commits the fix |
 | Content Schema | `content-schema.yml` | Required fields, correct types, valid section slugs, cross-references between articles/issues/homepage |
 | Photo Integrity | `photo-integrity.yml` | Referenced photos exist on disk; orphaned files in `photos/` are flagged |
-| Internal Links | `content-schema.yml` | `section.html?s=` and `article.html?id=` values match known slugs and article IDs |
 
 ### HTML checks (run on `*.html` changes)
 
@@ -133,9 +132,10 @@ Each script can be run locally:
 
 ```bash
 python3 .github/scripts/validate_content.py content.json
-python3 .github/scripts/check_links.py
+python3 .github/scripts/check_photos.py content.json
 python3 .github/scripts/validate_html.py *.html
 python3 .github/scripts/purge_photos.py content.json --dry-run
+python3 .github/scripts/check_links.py          # not in CI; validates hardcoded ?s= and ?id= links in HTML
 ```
 
 ## Repository structure
@@ -154,6 +154,7 @@ python3 .github/scripts/purge_photos.py content.json --dry-run
 ├── styles.css          Single shared stylesheet
 ├── content.json        All site content
 ├── photos/             Article photos
+├── past/               Archived PDF print editions + OCR extraction scripts
 └── .github/
     ├── workflows/      GitHub Actions workflow files
     └── scripts/        Python validation and repair scripts

@@ -549,22 +549,20 @@ App.views.settings = {
     document.getElementById('topbarTitle').textContent = 'Settings';
     document.getElementById('topbarActions').innerHTML = '';
 
-    var savedToken = localStorage.getItem('rs_token') || '';
     document.getElementById('contentArea').innerHTML =
       '<div class="settings-wrap">' +
         '<div class="card">' +
-          '<div class="card-title">GitHub Authentication</div>' +
-          '<div class="field">' +
-            '<label>Personal Access Token</label>' +
-            '<input type="password" id="tokenInput" value="' + App.esc(savedToken) + '" placeholder="ghp_...">' +
+          '<div class="card-title">Account</div>' +
+          '<p style="font-size:13px;color:#555;margin-bottom:14px;">Signed in as <strong>@' + App.esc(App.state.user || '') + '</strong></p>' +
+          '<button class="btn btn-danger" id="signOutBtn">Sign out</button>' +
+        '</div>' +
+        '<div class="card">' +
+          '<div class="card-title">Change Token</div>' +
+          '<div class="field"><label>Personal Access Token</label>' +
+            '<input type="password" id="tokenInput" value="' + App.esc(localStorage.getItem('rs_token') || '') + '" placeholder="ghp_...">' +
           '</div>' +
-          '<p style="font-size:12px;color:#888;margin-bottom:14px;">Generate at github.com → Settings → Developer settings → Personal access tokens. Required scope: <strong>repo</strong> (or <strong>contents: write</strong> for fine-grained tokens).</p>' +
-          '<div style="display:flex;gap:8px;">' +
-            '<button class="btn btn-primary" id="saveTokenBtn">Save &amp; Connect</button>' +
-            '<button class="btn btn-secondary" id="testTokenBtn">Test Connection</button>' +
-            (savedToken ? '<button class="btn btn-danger" id="clearTokenBtn">Clear Token</button>' : '') +
-          '</div>' +
-          '<div id="tokenStatus" style="margin-top:12px;font-size:12px;"></div>' +
+          '<button class="btn btn-primary" id="saveTokenBtn">Save &amp; Reconnect</button>' +
+          '<div id="settingsTokenStatus" style="margin-top:12px;font-size:12px;min-height:18px;"></div>' +
         '</div>' +
         '<div class="card">' +
           '<div class="card-title">Repository</div>' +
@@ -574,48 +572,29 @@ App.views.settings = {
         '</div>' +
       '</div>';
 
+    document.getElementById('signOutBtn').addEventListener('click', function() {
+      App.auth.signOut();
+    });
+
     document.getElementById('saveTokenBtn').addEventListener('click', function() {
       var token = document.getElementById('tokenInput').value.trim();
       if (!token) return;
-      var statusEl = document.getElementById('tokenStatus');
-      statusEl.innerHTML = '<span class="spinner"></span> Connecting…';
-      App.github.validateToken(token).then(function(user) {
-        if (!App.ALLOWED_EDITORS.includes(user.login.toLowerCase())) {
-          statusEl.innerHTML = '<span style="color:#b91c1c;">✗ Access denied — @' + App.esc(user.login) + ' is not authorized to use this editor.</span>';
-          return;
+      var btn = document.getElementById('saveTokenBtn');
+      btn.disabled = true;
+      App.auth.connect(token, function(state, detail) {
+        var statusEl = document.getElementById('settingsTokenStatus');
+        if (state === 'connecting') {
+          statusEl.innerHTML = '<span class="spinner" style="width:12px;height:12px;border-width:2px;"></span> Connecting…';
+        } else if (state === 'error') {
+          btn.disabled = false;
+          if (detail === 'no_push_access') {
+            statusEl.innerHTML = '<span style="color:#b91c1c;">✗ Access denied.</span>';
+          } else {
+            statusEl.innerHTML = '<span style="color:#b91c1c;">✗ Token invalid or expired.</span>';
+          }
         }
-        localStorage.setItem('rs_token', token);
-        App.state.token = token;
-        statusEl.innerHTML = '<span style="color:#166534;">✓ Connected as @' + App.esc(user.login) + '</span>';
-        document.getElementById('sidebarFooter').innerHTML = 'Signed in as <strong>@' + App.esc(user.login) + '</strong>';
-        document.getElementById('navCiStatus').style.display = '';
-        App.github.getContent().then(function() { App.router.navigate('articles'); }).catch(App.handleApiError);
-      }).catch(function() {
-        statusEl.innerHTML = '<span style="color:#b91c1c;">✗ Token invalid or no repo access.</span>';
       });
     });
-
-    document.getElementById('testTokenBtn').addEventListener('click', function() {
-      var token = document.getElementById('tokenInput').value.trim();
-      if (!token) return;
-      var statusEl = document.getElementById('tokenStatus');
-      statusEl.innerHTML = '<span class="spinner"></span> Testing…';
-      App.github.validateToken(token).then(function(user) {
-        statusEl.innerHTML = '<span style="color:#166534;">✓ Valid — connected as @' + App.esc(user.login) + '</span>';
-      }).catch(function() {
-        statusEl.innerHTML = '<span style="color:#b91c1c;">✗ Token invalid or expired.</span>';
-      });
-    });
-
-    var clearBtn = document.getElementById('clearTokenBtn');
-    if (clearBtn) {
-      clearBtn.addEventListener('click', function() {
-        localStorage.removeItem('rs_token');
-        App.state.token = null;
-        document.getElementById('navCiStatus').style.display = 'none';
-        App.views.settings.render();
-      });
-    }
 
     document.getElementById('saveRepoBtn').addEventListener('click', function() {
       App.REPO_OWNER = document.getElementById('repoOwner').value.trim();

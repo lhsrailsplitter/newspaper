@@ -376,6 +376,21 @@ var App = {
         if (!r.ok) throw new Error('invalid');
         return r.json();
       });
+    },
+
+    checkRepoAccess: function(token) {
+      var url = App.github.apiBase + '/repos/' + App.REPO_OWNER + '/' + App.REPO_NAME;
+      return fetch(url, {
+        headers: {
+          'Authorization': 'token ' + token,
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      }).then(function(r) {
+        if (!r.ok) throw new Error('repo_not_found');
+        return r.json();
+      }).then(function(data) {
+        if (!data.permissions || !data.permissions.push) throw new Error('no_push_access');
+      });
     }
   },
 

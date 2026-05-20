@@ -258,6 +258,7 @@ var App = {
 
   state: {
     token:        null,
+    user:         null,
     sha:          null,
     content:      null,
     lastSavedJson: null,
@@ -472,6 +473,40 @@ var App = {
 
   // ── Views (populated below) ───────────────────────────────────────────
   views: {},
+
+  // ── Auth ──────────────────────────────────────────────────────────────
+  auth: {
+    connect: function(token, onStatus) {
+      onStatus('connecting');
+      return App.github.validateToken(token).then(function(user) {
+        return App.github.checkRepoAccess(token).then(function() { return user; });
+      }).then(function(user) {
+        localStorage.setItem('rs_token', token);
+        App.state.token = token;
+        App.state.user  = user.login;
+        document.getElementById('editorShell').removeAttribute('data-unauthed');
+        document.getElementById('sidebarFooter').innerHTML =
+          'Signed in as <strong>@' + App.esc(user.login) + '</strong>';
+        document.getElementById('navCiStatus').style.display = '';
+        onStatus('success', user.login);
+        return App.github.getContent().then(function() {
+          App.router.navigate('articles');
+        });
+      }).catch(function(err) {
+        onStatus('error', err.message);
+      });
+    },
+
+    signOut: function() {
+      localStorage.removeItem('rs_token');
+      App.state.token = null;
+      App.state.user  = null;
+      document.getElementById('editorShell').setAttribute('data-unauthed', '');
+      document.getElementById('sidebarFooter').textContent = 'Not signed in';
+      document.getElementById('navCiStatus').style.display = 'none';
+      App.router.navigate('setup');
+    }
+  },
 
   // ── Init ──────────────────────────────────────────────────────────────
   init: function() {

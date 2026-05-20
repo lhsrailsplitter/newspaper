@@ -180,10 +180,12 @@ button{cursor:pointer;font-family:inherit;font-size:13px;}
 .wf-detail-step{color:#991b1b;padding-left:10px;margin-bottom:3px;}
 .wf-detail-step::before{content:"✗  ";}
 .wf-detail-log{background:#1c1917;color:#e7e3de;padding:10px 14px;border-radius:5px;font-size:11px;line-height:1.65;margin-top:8px;overflow-x:auto;white-space:pre-wrap;word-break:break-all;max-height:200px;overflow-y:auto;}
+[data-unauthed] .sidebar-nav{display:none;}
+[data-unauthed] .sidebar-footer{display:none;}
 </style>
 </head>
 <body>
-<div class="shell">
+<div class="shell" id="editorShell">
 
   <!-- Sidebar -->
   <aside class="sidebar">

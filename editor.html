@@ -625,6 +625,77 @@ App.views.settings = {
   }
 };
 
+// ── Setup view (first-time onboarding) ────────────────────────────────────
+App.views.setup = {
+  render: function() {
+    document.getElementById('topbarTitle').textContent = 'Get Started';
+    document.getElementById('topbarActions').innerHTML = '';
+    document.getElementById('contentArea').innerHTML =
+      '<div style="max-width:560px;margin:40px auto;padding:0 16px;">' +
+        '<div class="card">' +
+          '<div class="card-title">Welcome to The Railsplitter Editor</div>' +
+          '<p style="font-size:13px;color:#888;margin-bottom:24px;">Follow these three steps to connect your GitHub account.</p>' +
+
+          '<div style="margin-bottom:20px;">' +
+            '<div style="font-size:11px;font-weight:700;color:#C85500;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Step 1 — Create a GitHub account</div>' +
+            '<p style="font-size:13px;color:#555;margin:0;">' +
+              'Go to <a href="https://github.com/signup" target="_blank" style="color:#C85500;text-decoration:underline;">github.com/signup</a> and create a free account. Any email address works.' +
+            '</p>' +
+          '</div>' +
+
+          '<div style="margin-bottom:20px;">' +
+            '<div style="font-size:11px;font-weight:700;color:#C85500;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Step 2 — Get access from your advisor</div>' +
+            '<p style="font-size:13px;color:#555;margin:0;">' +
+              'Tell your faculty advisor your GitHub username. They\'ll add you to the newspaper\'s repository. You\'ll get a confirmation email from GitHub.' +
+            '</p>' +
+          '</div>' +
+
+          '<div style="margin-bottom:24px;">' +
+            '<div style="font-size:11px;font-weight:700;color:#C85500;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Step 3 — Create your access token</div>' +
+            '<p style="font-size:13px;color:#555;margin-bottom:8px;">' +
+              'In GitHub: click your <strong>profile picture</strong> (top-right) &rarr; <strong>Settings</strong> &rarr; <strong>Developer settings</strong> (bottom of left sidebar) &rarr; <strong>Personal access tokens</strong> &rarr; <strong>Tokens (classic)</strong> &rarr; <strong>Generate new token (classic)</strong>' +
+            '</p>' +
+            '<ul style="font-size:13px;color:#555;margin:0;padding-left:18px;line-height:1.8;">' +
+              '<li>Set expiration to <strong>1 year</strong></li>' +
+              '<li>Check the <strong><code style="background:#f0ede8;padding:1px 4px;border-radius:3px;">repo</code></strong> scope</li>' +
+              '<li>Click <strong>Generate token</strong></li>' +
+              '<li>Copy the token — it starts with <code style="background:#f0ede8;padding:1px 4px;border-radius:3px;">ghp_</code> and won\'t be shown again</li>' +
+            '</ul>' +
+          '</div>' +
+
+          '<div style="border-top:1px solid #e8e5e0;padding-top:20px;">' +
+            '<div class="field"><label>Paste your token here</label>' +
+              '<input type="password" id="setupTokenInput" placeholder="ghp_...">' +
+            '</div>' +
+            '<button class="btn btn-primary" id="setupConnectBtn">Connect</button>' +
+            '<div id="setupStatus" style="margin-top:10px;font-size:12px;min-height:18px;"></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    document.getElementById('setupConnectBtn').addEventListener('click', function() {
+      var token = document.getElementById('setupTokenInput').value.trim();
+      if (!token) return;
+      var btn = document.getElementById('setupConnectBtn');
+      btn.disabled = true;
+      App.auth.connect(token, function(state, detail) {
+        var statusEl = document.getElementById('setupStatus');
+        if (state === 'connecting') {
+          statusEl.innerHTML = '<span class="spinner" style="width:12px;height:12px;border-width:2px;"></span> Connecting…';
+        } else if (state === 'error') {
+          btn.disabled = false;
+          if (detail === 'no_push_access') {
+            statusEl.innerHTML = '<span style="color:#b91c1c;">✗ Access denied — your account doesn\'t have access yet. Contact your faculty advisor (Step 2).</span>';
+          } else {
+            statusEl.innerHTML = '<span style="color:#b91c1c;">✗ Token not recognised. Double-check you copied the full token starting with <code>ghp_</code>.</span>';
+          }
+        }
+        // On success App.auth.connect navigates to articles — no status update needed
+      });
+    });
+  }
+};
+
 // ── All Articles view ──────────────────────────────────────────────────────
 App.views.articles = {
   render: function() {

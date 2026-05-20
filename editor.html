@@ -254,7 +254,6 @@ var App = {
   REPO_OWNER: 'luryann',
   REPO_NAME:  'lincolnNewsletter',
   CONTENT_PATH: 'content.json',
-  ALLOWED_EDITORS: ['luryann'], // GitHub usernames permitted to use this editor
 
   state: {
     token:        null,
@@ -519,32 +518,27 @@ var App = {
     App.state.token = localStorage.getItem('rs_token');
 
     if (!App.state.token) {
-      App.router.navigate('settings');
+      document.getElementById('editorShell').setAttribute('data-unauthed', '');
+      App.router.navigate('setup');
       return;
     }
 
     document.getElementById('topbarTitle').textContent = 'Loading…';
     document.getElementById('contentArea').innerHTML = '<div class="spinner"></div>';
 
-    App.github.validateToken(App.state.token).then(function(user) {
-      if (!App.ALLOWED_EDITORS.includes(user.login.toLowerCase())) {
-        localStorage.removeItem('rs_token');
-        App.state.token = null;
-        document.getElementById('topbarTitle').textContent = 'Access Denied';
-        document.getElementById('contentArea').innerHTML =
-          '<div class="notice notice-error" style="max-width:480px;margin:40px auto;">' +
-            '<strong>Access denied.</strong> Your GitHub account (@' + App.esc(user.login) + ') is not authorized to use this editor. ' +
-            'Contact the editor-in-chief to request access.' +
-          '</div>';
-        return;
+    App.auth.connect(App.state.token, function(state, detail) {
+      if (state === 'error') {
+        if (detail === 'no_push_access') {
+          document.getElementById('topbarTitle').textContent = 'Access Denied';
+          document.getElementById('contentArea').innerHTML =
+            '<div class="notice notice-error" style="max-width:480px;margin:40px auto;">' +
+              '<strong>Access denied.</strong> Your GitHub account doesn\'t have write access to this repository. ' +
+              'Contact your faculty advisor to be added.' +
+            '</div>';
+        } else {
+          App.handleApiError(new Error(detail));
+        }
       }
-      document.getElementById('sidebarFooter').innerHTML = 'Signed in as <strong>@' + App.esc(user.login) + '</strong>';
-      document.getElementById('navCiStatus').style.display = '';
-      return App.github.getContent().then(function() {
-        App.router.navigate('articles');
-      });
-    }).catch(function(err) {
-      App.handleApiError(err);
     });
   }
 };

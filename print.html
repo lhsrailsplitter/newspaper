@@ -2,148 +2,987 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Print — The Railsplitter</title>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IM+Fell+English:ital@0;1&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:Georgia,'Times New Roman',serif;background:#fff;color:#111;font-size:10pt;padding:20px;}
-.no-print-btn{position:fixed;top:16px;right:16px;background:#C85500;color:#fff;border:none;padding:10px 20px;font-size:14px;border-radius:5px;cursor:pointer;font-family:sans-serif;}
-@media print{.no-print-btn{display:none;}body{padding:0;}}
+/* ─── PAGE SETUP ──────────────────────────────────────────── */
+@page {
+  size: letter;
+  margin: 0.6in 0.72in;
+}
 
-/* Masthead */
-.mast{text-align:center;border-top:3px solid #111;border-bottom:3px solid #111;padding:10px 0;margin-bottom:16px;}
-.mast__name{font-size:36pt;font-weight:700;letter-spacing:-.02em;line-height:1;}
-.mast__meta{font-size:9pt;color:#555;margin-top:4px;letter-spacing:.05em;text-transform:uppercase;}
-.mast-rule{border:none;border-top:1px solid #111;margin:6px 0;}
+/* ─── VARIABLES ───────────────────────────────────────────── */
+:root {
+  --ink:      #0A0A08;
+  --paper:    #FEFDF5;
+  --red:      #8B1A1A;
+  --muted:    #4A4640;
+  --rule-lt:  #C8C4B8;
+  --gap:      15pt;
 
-/* Cover story */
-.cover{border-bottom:2px solid #111;padding-bottom:16px;margin-bottom:16px;}
-.cover__label{font-size:8pt;text-transform:uppercase;letter-spacing:.1em;color:#C85500;font-family:sans-serif;margin-bottom:4px;}
-.cover__hed{font-size:28pt;font-weight:700;line-height:1.05;margin-bottom:8px;}
-.cover__dek{font-size:12pt;color:#333;margin-bottom:8px;line-height:1.4;}
-.cover__byline{font-size:9pt;color:#555;font-family:sans-serif;}
-.cover__img{width:100%;max-height:260px;object-fit:cover;margin:10px 0;}
-.cover__img-ph{width:100%;height:200px;background:#ddd;margin:10px 0;}
-.cover__body{margin-top:10px;font-size:10pt;line-height:1.65;column-count:3;column-gap:20px;}
-.cover__body p{margin-bottom:8pt;}
-.cover__body h3{font-size:11pt;margin:10pt 0 4pt;}
-.cover__body blockquote{border-left:3px solid #C85500;padding-left:8px;margin:8pt 0;font-style:italic;}
+  --f-black:  'UnifrakturMaguntia', serif;
+  --f-head:   'Playfair Display', Georgia, serif;
+  --f-body:   'IM Fell English', Georgia, serif;
+  --f-ui:     'DM Sans', system-ui, sans-serif;
+}
 
-/* Article grid */
-.grid-heading{font-size:9pt;text-transform:uppercase;letter-spacing:.1em;color:#888;font-family:sans-serif;margin-bottom:8px;border-bottom:1px solid #ddd;padding-bottom:4px;}
-.grid{column-count:3;column-gap:20px;}
-.art-card{break-inside:avoid;margin-bottom:14pt;padding-bottom:14pt;border-bottom:1px solid #ddd;}
-.art-card__section{font-size:7.5pt;text-transform:uppercase;letter-spacing:.1em;color:#C85500;font-family:sans-serif;}
-.art-card__hed{font-size:13pt;font-weight:700;line-height:1.15;margin:3pt 0 4pt;}
-.art-card__dek{font-size:9pt;color:#444;line-height:1.4;margin-bottom:4pt;}
-.art-card__byline{font-size:8pt;color:#888;font-family:sans-serif;}
-.art-card__body{margin-top:6pt;font-size:9pt;line-height:1.55;}
-.art-card__body p{margin-bottom:5pt;}
-.art-card__img{width:100%;height:80px;object-fit:cover;margin-bottom:6pt;}
-.art-card__img-ph{width:100%;height:60px;background:#e8e5e0;margin-bottom:6pt;}
-.art-card__stub{font-size:8pt;color:#aaa;font-style:italic;margin-top:4pt;}
-.error{padding:40px;text-align:center;font-family:sans-serif;color:#888;}
+/* ─── RESET ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+img { display: block; max-width: 100%; }
+
+/* ─── SCREEN CHROME ───────────────────────────────────────── */
+@media screen {
+  html { background: #5C5850; }
+  body { padding: 0 0 80px; }
+
+  .screen-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: #1E1C1A;
+    color: #EDE9E0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 28px;
+    font-family: var(--f-ui);
+  }
+  .screen-bar__title {
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #8A8480;
+  }
+  .screen-bar__right { display: flex; align-items: center; gap: 14px; }
+  .screen-bar__issue {
+    font-family: var(--f-head);
+    font-style: italic;
+    font-size: 13px;
+    color: #A8A49C;
+  }
+  .print-btn {
+    background: var(--red);
+    color: #fff;
+    border: none;
+    padding: 8px 22px;
+    font-family: var(--f-ui);
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .print-btn:hover { background: #721616; }
+
+  .paper-wrap { padding: 36px 20px; }
+
+  .paper {
+    width: 8.5in;
+    max-width: 100%;
+    margin: 0 auto 52px;
+    background: var(--paper);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25), 0 8px 40px rgba(0,0,0,0.18);
+    padding: 0.6in 0.72in;
+    position: relative;
+  }
+
+  /* newsprint grain */
+  .paper::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    mix-blend-mode: multiply;
+    opacity: 0.6;
+  }
+
+  .pg-label {
+    width: 8.5in;
+    max-width: 100%;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--f-ui);
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #9A9590;
+  }
+  .pg-label::before, .pg-label::after {
+    content: ''; flex: 1; height: 1px; background: #9A9590;
+  }
+}
+
+/* ─── PRINT ───────────────────────────────────────────────── */
+@media print {
+  .no-print, .screen-bar, .pg-label { display: none !important; }
+  html, body { background: white; margin: 0; padding: 0; }
+  .paper-wrap { padding: 0; }
+  .paper {
+    width: 100%; padding: 0; box-shadow: none;
+    margin: 0; background: transparent;
+    page-break-after: always;
+  }
+  .paper:last-child { page-break-after: auto; }
+  .paper::after { display: none; }
+}
+
+/* ─── MASTHEAD ────────────────────────────────────────────── */
+.mast { margin-bottom: 9pt; }
+
+.mast__thick-rule {
+  height: 5pt;
+  background: var(--ink);
+  margin-bottom: 4pt;
+}
+
+.mast__vol-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--f-ui);
+  font-size: 6.8pt;
+  color: var(--muted);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  border-top: 0.5pt solid var(--ink);
+  border-bottom: 0.5pt solid var(--ink);
+  padding: 2.5pt 0;
+  margin-bottom: 3pt;
+}
+
+.mast__name {
+  font-family: var(--f-black);
+  font-size: 66pt;
+  line-height: 1;
+  text-align: center;
+  color: var(--ink);
+  display: block;
+  letter-spacing: -0.01em;
+}
+
+.mast__double-rule {
+  border: none;
+  border-top: 3pt double var(--ink);
+  margin-top: 4pt;
+}
+
+/* ─── BREAKING BANNER ─────────────────────────────────────── */
+.breaking {
+  background: var(--ink);
+  color: #fff;
+  display: flex;
+  align-items: baseline;
+  gap: 10pt;
+  padding: 4pt 8pt;
+  margin-bottom: 9pt;
+  font-family: var(--f-ui);
+}
+.breaking__label {
+  background: var(--red);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 1.5pt 5pt;
+  white-space: nowrap;
+}
+.breaking__text { font-size: 8.5pt; letter-spacing: 0.02em; }
+
+/* ─── FRONT PAGE GRID ─────────────────────────────────────── */
+.front-grid {
+  display: grid;
+  grid-template-columns: 4fr 2fr;
+  grid-template-rows: auto auto;
+  gap: 0;
+  border-top: 1pt solid var(--ink);
+}
+
+.front-cover {
+  padding-right: var(--gap);
+  border-right: 0.5pt solid var(--rule-lt);
+  padding-bottom: 10pt;
+  padding-top: 8pt;
+}
+
+.front-sidebar {
+  padding-left: var(--gap);
+  padding-top: 8pt;
+  padding-bottom: 10pt;
+}
+
+.front-bottom {
+  grid-column: 1 / 3;
+  border-top: 1pt solid var(--ink);
+  padding-top: 9pt;
+  margin-top: 0;
+}
+
+/* ─── COVER STORY ─────────────────────────────────────────── */
+.cover__flag {
+  font-family: var(--f-ui);
+  font-size: 6.8pt;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 4pt;
+  display: block;
+}
+
+.cover__photo {
+  width: 100%;
+  max-height: 180pt;
+  object-fit: cover;
+  margin: 5pt 0;
+}
+.cover__photo-ph {
+  width: 100%;
+  height: 150pt;
+  background: #DEDAD2;
+  margin: 5pt 0;
+}
+.cover__credit {
+  font-family: var(--f-ui);
+  font-size: 6.2pt;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 5pt;
+}
+
+.cover__hed {
+  font-family: var(--f-head);
+  font-size: 28pt;
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 5pt;
+}
+
+.cover__dek {
+  font-family: var(--f-body);
+  font-style: italic;
+  font-size: 10.5pt;
+  line-height: 1.45;
+  color: var(--muted);
+  border-left: 2pt solid var(--red);
+  padding-left: 7pt;
+  margin-bottom: 4pt;
+}
+
+.cover__byline {
+  font-family: var(--f-ui);
+  font-size: 7pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-top: 0.5pt solid var(--rule-lt);
+  padding-top: 3pt;
+  margin-bottom: 7pt;
+}
+
+.cover__body {
+  column-count: 3;
+  column-gap: var(--gap);
+  column-rule: 0.5pt solid var(--rule-lt);
+  font-family: var(--f-body);
+  font-size: 9pt;
+  line-height: 1.68;
+  color: var(--ink);
+}
+
+/* Drop cap */
+.cover__body > p:first-child::first-letter {
+  font-family: var(--f-head);
+  font-size: 3.4em;
+  font-weight: 900;
+  float: left;
+  line-height: 0.78;
+  margin: 3pt 4pt -2pt 0;
+  color: var(--ink);
+}
+
+.cover__body p { margin-bottom: 5pt; }
+.cover__body h3 {
+  font-family: var(--f-head);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 8pt 0 3pt;
+}
+.cover__body blockquote {
+  border-left: 2pt solid var(--red);
+  padding-left: 6pt;
+  font-style: italic;
+  color: var(--muted);
+  margin: 5pt 0;
+}
+
+/* ─── SIDEBAR ─────────────────────────────────────────────── */
+.sidebar__label {
+  font-family: var(--f-ui);
+  font-size: 6.8pt;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1pt solid var(--ink);
+  padding-bottom: 3pt;
+  margin-bottom: 8pt;
+}
+
+.sidebar-brief {
+  padding-bottom: 8pt;
+  margin-bottom: 8pt;
+  border-bottom: 0.5pt solid var(--rule-lt);
+}
+.sidebar-brief:last-child { border-bottom: none; margin-bottom: 0; }
+
+.sidebar-brief__sec {
+  font-family: var(--f-ui);
+  font-size: 6.5pt;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 2pt;
+}
+
+.sidebar-brief__hed {
+  font-family: var(--f-head);
+  font-size: 10.5pt;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink);
+  margin-bottom: 3pt;
+}
+
+.sidebar-brief__dek {
+  font-family: var(--f-body);
+  font-style: italic;
+  font-size: 8.5pt;
+  line-height: 1.4;
+  color: var(--muted);
+  margin-bottom: 2pt;
+}
+
+.sidebar-brief__by {
+  font-family: var(--f-ui);
+  font-size: 6.5pt;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ─── FRONT-PAGE BOTTOM ROW ───────────────────────────────── */
+.news-row {
+  display: grid;
+  gap: 0;
+}
+.news-row--2 { grid-template-columns: 1fr 1fr; }
+.news-row--3 { grid-template-columns: 1fr 1fr 1fr; }
+
+.news-col {
+  padding-right: var(--gap);
+  border-right: 0.5pt solid var(--rule-lt);
+}
+.news-col:last-child { border-right: none; padding-right: 0; padding-left: var(--gap); }
+.news-col:only-child { padding: 0; border: none; }
+
+.news-col__sec {
+  font-family: var(--f-ui);
+  font-size: 6.5pt;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 3pt;
+}
+
+.news-col__hed {
+  font-family: var(--f-head);
+  font-size: 14pt;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 4pt;
+}
+
+.news-col__dek {
+  font-family: var(--f-body);
+  font-style: italic;
+  font-size: 9pt;
+  line-height: 1.4;
+  color: var(--muted);
+  margin-bottom: 3pt;
+}
+
+.news-col__by {
+  font-family: var(--f-ui);
+  font-size: 6.5pt;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  border-top: 0.5pt solid var(--rule-lt);
+  padding-top: 3pt;
+  margin-bottom: 5pt;
+}
+
+.news-col__photo {
+  width: 100%;
+  height: 70pt;
+  object-fit: cover;
+  margin-bottom: 5pt;
+}
+
+/* ─── CONTINUATION HEADER ─────────────────────────────────── */
+.cont-hd {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1pt solid var(--ink);
+  padding-bottom: 4pt;
+  margin-bottom: 9pt;
+  font-family: var(--f-ui);
+  font-size: 7pt;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+.cont-hd__name {
+  font-family: var(--f-black);
+  font-size: 15pt;
+  line-height: 1;
+  color: var(--ink);
+  letter-spacing: 0;
+}
+
+/* ─── SECTION FLAG ────────────────────────────────────────── */
+.sec-flag {
+  text-align: center;
+  position: relative;
+  margin: 0 0 12pt;
+}
+.sec-flag::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 1pt;
+  background: var(--ink);
+}
+.sec-flag__txt {
+  position: relative;
+  display: inline-block;
+  background: var(--paper);
+  padding: 0 14pt;
+  font-family: var(--f-head);
+  font-size: 17pt;
+  font-weight: 900;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+/* ─── ARTICLE (interior pages) ────────────────────────────── */
+.art + .art {
+  border-top: 1pt solid var(--ink);
+  margin-top: 12pt;
+  padding-top: 12pt;
+}
+
+.art__flag {
+  font-family: var(--f-ui);
+  font-size: 6.8pt;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 3pt;
+  display: block;
+}
+
+.art__photo {
+  width: 100%;
+  max-height: 160pt;
+  object-fit: cover;
+  margin: 5pt 0;
+}
+.art__photo-ph {
+  width: 100%;
+  height: 100pt;
+  background: #DEDAD2;
+  margin: 5pt 0;
+}
+.art__credit {
+  font-family: var(--f-ui);
+  font-size: 6.2pt;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 5pt;
+}
+
+.art__hed {
+  font-family: var(--f-head);
+  font-size: 20pt;
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin-bottom: 5pt;
+}
+
+.art__dek {
+  font-family: var(--f-body);
+  font-style: italic;
+  font-size: 10pt;
+  line-height: 1.45;
+  color: var(--muted);
+  border-left: 2pt solid var(--red);
+  padding-left: 7pt;
+  margin-bottom: 4pt;
+}
+
+.art__by {
+  font-family: var(--f-ui);
+  font-size: 7pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-top: 0.5pt solid var(--rule-lt);
+  padding-top: 3pt;
+  margin-bottom: 7pt;
+}
+
+/* Article body column counts */
+.art-body {
+  font-family: var(--f-body);
+  font-size: 9pt;
+  line-height: 1.68;
+  color: var(--ink);
+}
+.art-body--cols3 {
+  column-count: 3;
+  column-gap: var(--gap);
+  column-rule: 0.5pt solid var(--rule-lt);
+}
+.art-body--cols2 {
+  column-count: 2;
+  column-gap: var(--gap);
+  column-rule: 0.5pt solid var(--rule-lt);
+}
+
+.art-body > p:first-child::first-letter {
+  font-family: var(--f-head);
+  font-size: 3.4em;
+  font-weight: 900;
+  float: left;
+  line-height: 0.78;
+  margin: 3pt 4pt -2pt 0;
+  color: var(--ink);
+}
+
+.art-body p { margin-bottom: 5pt; }
+.art-body h3 {
+  font-family: var(--f-head);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 8pt 0 3pt;
+}
+.art-body blockquote {
+  border-left: 2pt solid var(--red);
+  padding-left: 6pt;
+  font-style: italic;
+  color: var(--muted);
+  margin: 5pt 0;
+}
+.art-body ul, .art-body ol { padding-left: 12pt; margin-bottom: 5pt; }
+.art-body li { margin-bottom: 2pt; }
+
+/* Sports grid: 2-column article layout for many short pieces */
+.sports-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.sports-grid .art {
+  padding-right: var(--gap);
+  border-right: 0.5pt solid var(--rule-lt);
+}
+.sports-grid .art:nth-child(2n) {
+  padding-right: 0;
+  padding-left: var(--gap);
+  border-right: none;
+}
+.sports-grid .art:nth-child(2n) + .art {
+  border-top: 1pt solid var(--ink);
+  padding-top: 12pt;
+  margin-top: 12pt;
+}
+.sports-grid .art:nth-child(2n-1):nth-last-child(1) {
+  grid-column: 1 / 3;
+  padding-right: 0;
+  border-right: none;
+}
+
+/* ─── STAFF CREDITS ───────────────────────────────────────── */
+.staff-block {
+  border-top: 2pt solid var(--ink);
+  padding-top: 8pt;
+  margin-top: 12pt;
+  column-count: 3;
+  column-gap: var(--gap);
+  column-rule: 0.5pt solid var(--rule-lt);
+}
+
+.staff-block__head {
+  column-span: all;
+  font-family: var(--f-head);
+  font-size: 8pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--ink);
+  margin-bottom: 7pt;
+}
+
+.staff-group {
+  break-inside: avoid;
+  margin-bottom: 7pt;
+}
+
+.staff-group__role {
+  font-family: var(--f-ui);
+  font-size: 6.5pt;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--red);
+  border-bottom: 0.5pt solid var(--rule-lt);
+  padding-bottom: 2pt;
+  margin-bottom: 3pt;
+}
+
+.staff-group__names {
+  font-family: var(--f-body);
+  font-size: 8pt;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* ─── PAGE FOOTER ─────────────────────────────────────────── */
+.pg-footer {
+  margin-top: 10pt;
+  border-top: 2pt solid var(--ink);
+  padding-top: 5pt;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--f-ui);
+  font-size: 6.8pt;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+/* ─── UTILITY ─────────────────────────────────────────────── */
+.error {
+  padding: 60pt;
+  text-align: center;
+  font-family: var(--f-ui);
+  font-size: 11pt;
+  color: var(--muted);
+}
 </style>
 </head>
 <body>
 
-<button class="no-print-btn" onclick="window.print()">Print / Save PDF</button>
-<div id="root"><p class="error">Loading…</p></div>
+<div class="screen-bar no-print">
+  <span class="screen-bar__title">The Railsplitter — Print Preview</span>
+  <div class="screen-bar__right">
+    <span class="screen-bar__issue" id="bar-issue"></span>
+    <button class="print-btn" onclick="window.print()">&#128424; Print / Save PDF</button>
+  </div>
+</div>
+
+<div class="paper-wrap" id="root"><p class="error">Loading&hellip;</p></div>
 
 <script>
 var RAW_BASE = 'https://raw.githubusercontent.com/luryann/lincolnNewsletter/main/';
+var SECTION_ORDER = ['news','features','opinion','sports','reviews'];
 
-function esc(s) {
-  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function esc(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function secLabel(slug, sections){
+  var s = sections.find(function(x){return x.slug===slug;});
+  return s ? s.title : slug;
+}
+
+function colsClass(bodyLen){
+  if(bodyLen > 700) return 'art-body--cols3';
+  if(bodyLen > 350) return 'art-body--cols2';
+  return '';
 }
 
 var params  = new URLSearchParams(window.location.search);
-var issueId = params.get('issue') || '';
+var issueId = params.get('issue')||'';
 
-fetch(RAW_BASE + 'content.json').then(function(r){
-  if (!r.ok) throw new Error('content.json returned ' + r.status);
-  return r.json();
-}).then(function(data) {
-  var issues   = data.issues || [];
-  var articles = data.articles || [];
-  var sections = data.sections || [];
+fetch('content.json')
+  .catch(function(){ return fetch(RAW_BASE+'content.json'); })
+  .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+  .then(function(data){
 
-  var issue = issues.find(function(i){ return i.id === issueId; });
-  if (!issue) {
-    document.getElementById('root').innerHTML = '<p class="error">Issue not found: ' + esc(issueId) + '</p>';
-    return;
-  }
+    var issues   = data.issues   || [];
+    var articles = data.articles || [];
+    var sections = data.sections || [];
+    var staff    = data.staff    || {};
+    var breaking = data.breaking || {};
 
-  var issueArticles = articles.filter(function(a){ return a.issueId === issueId && a.published; });
-  if (!issueArticles.length) {
-    document.getElementById('root').innerHTML = '<p class="error">No published articles in this issue.</p>';
-    return;
-  }
-  var cover = issueArticles.find(function(a){ return a.id === issue.coverArticle; }) || issueArticles[0];
-  var rest  = issueArticles.filter(function(a){ return !cover || a.id !== cover.id; });
-
-  function sectionTitle(slug) {
-    var s = sections.find(function(x){ return x.slug === slug; });
-    return s ? s.title : slug;
-  }
-
-  function imgOrPh(article, isCover) {
-    if (article.photo) {
-      return '<img class="' + (isCover ? 'cover__img' : 'art-card__img') + '" src="' + esc(RAW_BASE + article.photo) + '" alt="">';
+    if(!issueId){
+      var last = issues[issues.length-1];
+      issueId = last ? last.id : '';
     }
-    return '<div class="' + (isCover ? 'cover__img-ph' : 'art-card__img-ph') + '"></div>';
-  }
 
-  var coverHTML = '';
-  if (cover) {
-    var bodyHTML = '';
-    if (cover.body) {
-      // cover.body is trusted HTML authored via the editor (GitHub-authenticated)
-      bodyHTML = '<div class="cover__body">' + cover.body + '</div>';
+    var issue = issues.find(function(i){return i.id===issueId;});
+    if(!issue){
+      document.getElementById('root').innerHTML='<p class="error">Issue not found: '+esc(issueId)+'</p>';
+      return;
     }
-    coverHTML =
-      '<div class="cover">' +
-        '<div class="cover__label">' + esc(sectionTitle(cover.section)) + ' — Cover Story</div>' +
-        imgOrPh(cover, true) +
-        '<h1 class="cover__hed">' + esc(cover.title) + '</h1>' +
-        '<p class="cover__dek">' + esc(cover.dek) + '</p>' +
-        '<p class="cover__byline">By ' + esc(cover.author) + '</p>' +
-        bodyHTML +
+
+    var issueArts = articles.filter(function(a){return a.issueId===issueId && a.published;});
+    if(!issueArts.length){
+      document.getElementById('root').innerHTML='<p class="error">No published articles in this issue.</p>';
+      return;
+    }
+
+    var cover = issueArts.find(function(a){return a.id===issue.coverArticle;})||issueArts[0];
+
+    /* Group non-cover articles by section */
+    var bySection = {};
+    SECTION_ORDER.forEach(function(s){ bySection[s]=[]; });
+    issueArts.forEach(function(a){
+      if(a.id!==cover.id && bySection[a.section]) bySection[a.section].push(a);
+    });
+
+    var today = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+    var pageNum = 1;
+
+    document.title = issue.title+', '+issue.date+' — The Railsplitter';
+    var barIssue = document.getElementById('bar-issue');
+    if(barIssue) barIssue.textContent = issue.title+', '+issue.date;
+
+    /* ── MASTHEAD ── */
+    var mastheadHTML =
+      '<div class="mast">'+
+        '<div class="mast__thick-rule"></div>'+
+        '<div class="mast__vol-line">'+
+          '<span>Lincoln High School &middot; Los Angeles, CA &middot; Vol. XLVII</span>'+
+          '<span>'+esc(issue.title)+', '+esc(issue.date)+'</span>'+
+          '<span>'+esc(today)+' &middot; Free</span>'+
+        '</div>'+
+        '<div class="mast__name">The Railsplitter</div>'+
+        '<hr class="mast__double-rule">'+
       '</div>';
-  }
 
-  var cardsHTML = rest.map(function(a) {
-    var bodySnippet = '';
-    if (a.body) {
-      var tmp = document.createElement('div');
-      tmp.innerHTML = a.body;
-      var text = tmp.textContent || '';
-      bodySnippet = '<div class="art-card__body"><p>' + esc(text.slice(0, 300)) + (text.length > 300 ? '…' : '') + '</p></div>';
-    } else {
-      bodySnippet = '<p class="art-card__stub">Full article not yet written.</p>';
+    /* ── BREAKING BANNER ── */
+    var bannerHTML = '';
+    if(breaking.active && breaking.text){
+      bannerHTML =
+        '<div class="breaking">'+
+          '<span class="breaking__label">Breaking</span>'+
+          '<span class="breaking__text">'+esc(breaking.text)+'</span>'+
+        '</div>';
     }
-    return '<div class="art-card">' +
-      '<div class="art-card__section">' + esc(sectionTitle(a.section)) + '</div>' +
-      imgOrPh(a, false) +
-      '<h2 class="art-card__hed">' + esc(a.title) + '</h2>' +
-      '<p class="art-card__dek">' + esc(a.dek) + '</p>' +
-      '<p class="art-card__byline">By ' + esc(a.author) + '</p>' +
-      bodySnippet +
-    '</div>';
-  }).join('');
 
-  document.title = issue.title + ', ' + issue.date + ' — The Railsplitter';
-  document.getElementById('root').innerHTML =
-    '<div class="mast">' +
-      '<div class="mast__name">The Railsplitter</div>' +
-      '<hr class="mast-rule">' +
-      '<div class="mast__meta">Lincoln High School &nbsp;·&nbsp; Los Angeles, CA &nbsp;·&nbsp; ' + esc(issue.title) + ', ' + esc(issue.date) + '</div>' +
-    '</div>' +
-    coverHTML +
-    (rest.length ? '<div class="grid-heading">More in this issue</div><div class="grid">' + cardsHTML + '</div>' : '');
+    /* ── COVER STORY ── */
+    var coverPhotoHTML = cover.photo
+      ? '<img class="cover__photo" src="'+esc(RAW_BASE+cover.photo)+'" alt="">'
+        +(cover.credit ? '<div class="cover__credit">'+esc(cover.credit)+'</div>' : '')
+      : '<div class="cover__photo-ph"></div>';
 
-}).catch(function(err) {
-  document.getElementById('root').innerHTML = '<p class="error">Failed to load content: ' + esc(err.message) + '</p>';
-});
+    var coverBodyHTML = cover.body
+      ? '<div class="cover__body">'+cover.body+'</div>'
+      : '';
+
+    var coverHTML =
+      '<div class="front-cover">'+
+        '<span class="cover__flag">'+esc(secLabel(cover.section,sections))+' &mdash; Cover Story</span>'+
+        coverPhotoHTML+
+        '<h1 class="cover__hed">'+esc(cover.title)+'</h1>'+
+        (cover.dek ? '<p class="cover__dek">'+esc(cover.dek)+'</p>' : '')+
+        '<p class="cover__byline">By '+esc(cover.author)+'</p>'+
+        coverBodyHTML+
+      '</div>';
+
+    /* ── SIDEBAR: one brief per non-news section ── */
+    var sidebarItems = SECTION_ORDER
+      .filter(function(s){ return s!=='news'; })
+      .map(function(s){ return bySection[s]&&bySection[s][0]; })
+      .filter(Boolean)
+      .slice(0,5);
+
+    var sidebarHTML =
+      '<div class="front-sidebar">'+
+        '<div class="sidebar__label">Also Inside</div>'+
+        sidebarItems.map(function(a){
+          return '<div class="sidebar-brief">'+
+            '<div class="sidebar-brief__sec">'+esc(secLabel(a.section,sections))+'</div>'+
+            '<div class="sidebar-brief__hed">'+esc(a.title)+'</div>'+
+            (a.dek ? '<div class="sidebar-brief__dek">'+esc(a.dek)+'</div>' : '')+
+            '<div class="sidebar-brief__by">By '+esc(a.author)+'</div>'+
+          '</div>';
+        }).join('')+
+      '</div>';
+
+    /* ── FRONT BOTTOM: secondary news articles ── */
+    var newsRest = bySection['news']||[];
+    var frontBottomHTML = '';
+    if(newsRest.length){
+      var rowClass = newsRest.length>=3 ? 'news-row--3' : 'news-row--2';
+      var colsHTML = newsRest.map(function(a,i){
+        var ph = a.photo
+          ? '<img class="news-col__photo" src="'+esc(RAW_BASE+a.photo)+'" alt="">'
+          : '';
+        return '<div class="news-col">'+
+          '<div class="news-col__sec">'+esc(secLabel(a.section,sections))+'</div>'+
+          ph+
+          '<h2 class="news-col__hed">'+esc(a.title)+'</h2>'+
+          (a.dek ? '<p class="news-col__dek">'+esc(a.dek)+'</p>' : '')+
+          '<p class="news-col__by">By '+esc(a.author)+'</p>'+
+        '</div>';
+      }).join('');
+      frontBottomHTML =
+        '<div class="front-bottom"><div class="news-row '+rowClass+'">'+colsHTML+'</div></div>';
+    }
+
+    var pgFooter = function(n,sec){
+      return '<div class="pg-footer">'+
+        '<span>The Railsplitter &mdash; Lincoln High School, Los Angeles, CA</span>'+
+        '<span>'+esc(issue.title)+', '+esc(issue.date)+'</span>'+
+        '<span>Page '+n+(sec?' &middot; '+esc(sec):'')+'</span>'+
+      '</div>';
+    };
+
+    var frontPage =
+      '<div class="paper" id="pg-front">'+
+        mastheadHTML+
+        bannerHTML+
+        '<div class="front-grid">'+
+          coverHTML+
+          sidebarHTML+
+          frontBottomHTML+
+        '</div>'+
+        pgFooter(pageNum++,'')+
+      '</div>';
+
+    /* ── SECTION PAGES ── */
+    var sectionPages = '';
+
+    SECTION_ORDER.forEach(function(slug){
+      var arts = bySection[slug]||[];
+      if(!arts.length) return;
+
+      var label = secLabel(slug,sections);
+      var isSports = slug==='sports';
+
+      /* Continuation header */
+      var contHd =
+        '<div class="cont-hd">'+
+          '<span class="cont-hd__name">The Railsplitter</span>'+
+          '<span>'+esc(issue.title)+', '+esc(issue.date)+'</span>'+
+          '<span>Lincoln High School &middot; Los Angeles, CA</span>'+
+          '<span>Page '+pageNum+'</span>'+
+        '</div>';
+
+      /* Section flag */
+      var flagHTML =
+        '<div class="sec-flag"><span class="sec-flag__txt">'+esc(label)+'</span></div>';
+
+      /* Articles */
+      var artsHTML = arts.map(function(a){
+        var photoHTML = '';
+        if(a.photo){
+          photoHTML = '<img class="art__photo" src="'+esc(RAW_BASE+a.photo)+'" alt="">';
+          if(a.credit) photoHTML += '<div class="art__credit">'+esc(a.credit)+'</div>';
+        }
+
+        var bodyLen = a.body ? a.body.length : 0;
+        var bodyHTML = a.body
+          ? '<div class="art-body '+colsClass(bodyLen)+'">'+a.body+'</div>'
+          : '';
+
+        return '<div class="art">'+
+          '<span class="art__flag">'+esc(label)+'</span>'+
+          photoHTML+
+          '<h2 class="art__hed">'+esc(a.title)+'</h2>'+
+          (a.dek ? '<p class="art__dek">'+esc(a.dek)+'</p>' : '')+
+          '<p class="art__by">By '+esc(a.author)+'</p>'+
+          bodyHTML+
+        '</div>';
+      }).join('');
+
+      var innerHTML = artsHTML;
+
+      /* Staff block on last section */
+      var isLastSection = false;
+      for(var si=SECTION_ORDER.indexOf(slug)+1;si<SECTION_ORDER.length;si++){
+        if((bySection[SECTION_ORDER[si]]||[]).length){ isLastSection=false; break; }
+        isLastSection=true;
+      }
+      if(SECTION_ORDER.indexOf(slug)===SECTION_ORDER.length-1) isLastSection=true;
+
+      var staffHTML = '';
+      if(isLastSection && staff){
+        var groups = [];
+        if(staff.leadership&&staff.leadership.length){
+          groups.push({role:'Leadership',names:staff.leadership.map(function(m){return m.name+(m.role?', '+m.role:'');}).join('<br>')});
+        }
+        if(staff.photoCopy&&staff.photoCopy.length){
+          groups.push({role:'Photo & Copy',names:staff.photoCopy.map(function(m){return m.name+(m.role?', '+m.role:'');}).join('<br>')});
+        }
+        if(staff.writers&&staff.writers.length){
+          groups.push({role:'Writers',names:staff.writers.map(function(m){return m.name;}).join(', ')});
+        }
+        if(groups.length){
+          staffHTML =
+            '<div class="staff-block">'+
+              '<div class="staff-block__head">The Railsplitter Staff</div>'+
+              groups.map(function(g){
+                return '<div class="staff-group">'+
+                  '<div class="staff-group__role">'+esc(g.role)+'</div>'+
+                  '<div class="staff-group__names">'+g.names+'</div>'+
+                '</div>';
+              }).join('')+
+            '</div>';
+        }
+      }
+
+      var pgNum = pageNum++;
+      var divider = '<div class="pg-label no-print">Page '+pgNum+' &mdash; '+esc(label)+'</div>';
+
+      sectionPages +=
+        divider+
+        '<div class="paper" id="pg-'+slug+'">'+
+          contHd+
+          flagHTML+
+          innerHTML+
+          staffHTML+
+          pgFooter(pgNum,label)+
+        '</div>';
+    });
+
+    document.getElementById('root').innerHTML = frontPage + sectionPages;
+
+  }).catch(function(err){
+    document.getElementById('root').innerHTML='<p class="error">Failed to load content: '+esc(err.message)+'</p>';
+  });
 </script>
 </body>
 </html>

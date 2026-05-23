@@ -435,6 +435,10 @@ var App = {
     (App.state.content.issues || []).forEach(function(issue) {
       if (issue.coverArticle === id) refs.push('Issue cover: ' + issue.title);
     });
+    var b = App.state.content.breaking;
+    if (b && b.link === 'article.html?id=' + id) {
+      refs.push('Breaking news banner link');
+    }
 
     var msg = 'Delete "' + title + '"?';
     if (refs.length) {
@@ -467,6 +471,9 @@ var App = {
     (App.state.content.issues || []).forEach(function(issue) {
       if (issue.coverArticle === id) issue.coverArticle = null;
     });
+    if (b && b.link === 'article.html?id=' + id) {
+      b.link = '';
+    }
 
     return App.github.saveContent('Delete: ' + title);
   },

@@ -424,7 +424,9 @@ var App = {
 
     var refs = [];
     if (hp.hero === id) refs.push('Homepage hero');
-    if (hp.heroAside === id) refs.push('Homepage hero aside');
+    (hp.heroAside || []).forEach(function(slotId, idx) {
+      if (slotId === id) refs.push('Homepage hero aside slot ' + (idx + 1));
+    });
     Object.keys(hp.sections || {}).forEach(function(slug) {
       (hp.sections[slug] || []).forEach(function(slotId, idx) {
         if (slotId === id) refs.push('Homepage: ' + slug + ' slot ' + (idx + 1));
@@ -450,7 +452,11 @@ var App = {
     });
 
     if (hp.hero === id) hp.hero = null;
-    if (hp.heroAside === id) hp.heroAside = null;
+    if (hp.heroAside) {
+      hp.heroAside = hp.heroAside.map(function(slotId) {
+        return slotId === id ? null : slotId;
+      });
+    }
     Object.keys(hp.sections || {}).forEach(function(slug) {
       if (hp.sections[slug]) {
         hp.sections[slug] = hp.sections[slug].map(function(slotId) {

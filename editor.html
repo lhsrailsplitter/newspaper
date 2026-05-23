@@ -416,6 +416,55 @@ var App = {
     return App.state.content.articles.find(function(a) { return a.id === id; });
   },
 
+  deleteArticle: function(id) {
+    var a = App.articleById(id);
+    if (!a) return Promise.resolve();
+    var title = a.title;
+    var hp = App.state.content.homepage;
+
+    var refs = [];
+    if (hp.hero === id) refs.push('Homepage hero');
+    if (hp.heroAside === id) refs.push('Homepage hero aside');
+    Object.keys(hp.sections || {}).forEach(function(slug) {
+      (hp.sections[slug] || []).forEach(function(slotId, idx) {
+        if (slotId === id) refs.push('Homepage: ' + slug + ' slot ' + (idx + 1));
+      });
+    });
+    (App.state.content.issues || []).forEach(function(issue) {
+      if (issue.coverArticle === id) refs.push('Issue cover: ' + issue.title);
+    });
+
+    var msg = 'Delete "' + title + '"?';
+    if (refs.length) {
+      msg += '\n\nThis article is referenced in:\n' +
+        refs.map(function(r) { return '- ' + r; }).join('\n') +
+        '\n\nThose slots will be cleared. This cannot be undone.';
+    } else {
+      msg += '\n\nThis cannot be undone.';
+    }
+
+    if (!confirm(msg)) return Promise.resolve();
+
+    App.state.content.articles = App.state.content.articles.filter(function(art) {
+      return art.id !== id;
+    });
+
+    if (hp.hero === id) hp.hero = null;
+    if (hp.heroAside === id) hp.heroAside = null;
+    Object.keys(hp.sections || {}).forEach(function(slug) {
+      if (hp.sections[slug]) {
+        hp.sections[slug] = hp.sections[slug].map(function(slotId) {
+          return slotId === id ? null : slotId;
+        });
+      }
+    });
+    (App.state.content.issues || []).forEach(function(issue) {
+      if (issue.coverArticle === id) issue.coverArticle = null;
+    });
+
+    return App.github.saveContent('Delete: ' + title);
+  },
+
   sectionBySlug: function(slug) {
     return App.state.content.sections.find(function(s) { return s.slug === slug; });
   },

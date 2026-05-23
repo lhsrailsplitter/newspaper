@@ -755,8 +755,9 @@ App.views.articles = {
             (a.published ? 'Published' : 'Draft') +
           '</span>' +
         '</td>' +
-        '<td style="padding:10px 12px;">' +
+        '<td style="padding:10px 12px;white-space:nowrap;">' +
           '<a href="#" class="art-link btn btn-secondary" data-id="' + App.esc(a.id) + '" style="font-size:12px;">Edit</a>' +
+          ' <button class="art-delete btn btn-danger" data-id="' + App.esc(a.id) + '" style="font-size:12px;">Delete</button>' +
         '</td>' +
       '</tr>';
     }).join('');
@@ -779,6 +780,18 @@ App.views.articles = {
       link.addEventListener('click', function(e) {
         e.preventDefault();
         App.router.navigate('articleEditor', { articleId: link.dataset.id });
+      });
+    });
+
+    document.querySelectorAll('.art-delete').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var id = btn.dataset.id;
+        App.deleteArticle(id).then(function() {
+          App.showSuccess('Article deleted.');
+          App.views.articles.render();
+        }).catch(function(err) {
+          App.handleApiError(err);
+        });
       });
     });
 

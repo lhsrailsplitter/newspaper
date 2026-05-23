@@ -23,7 +23,7 @@
     <div class="wrap">
       <div class="masthead">
         <hr class="masthead__rule-top">
-        <a href="index.html"><span class="masthead__wordmark">The Railsplitter</span></a>
+        <a href="index"><span class="masthead__wordmark">The Railsplitter</span></a>
         <span class="masthead__tagline">Official Student Publication &nbsp;&middot;&nbsp; Volume 6 &nbsp;&middot;&nbsp; Lincoln High School</span>
         <hr class="masthead__rule-bottom">
       </div>
@@ -33,14 +33,14 @@
   <!-- Navigation -->
   <nav class="nav">
     <div class="nav__inner">
-      <a href="index.html" class="nav__item">Home</a>
-      <a href="section.html?s=news" class="nav__item">Lincoln News</a>
-      <a href="section.html?s=features" class="nav__item">Features</a>
-      <a href="section.html?s=opinion" class="nav__item">Opinion</a>
-      <a href="section.html?s=sports" class="nav__item">Sports</a>
-      <a href="section.html?s=reviews" class="nav__item">Reviews</a>
-      <a href="about.html" class="nav__item">About</a>
-      <a href="archive.html" class="nav__item">Archive</a>
+      <a href="index" class="nav__item">Home</a>
+      <a href="section?s=news" class="nav__item">Lincoln News</a>
+      <a href="section?s=features" class="nav__item">Features</a>
+      <a href="section?s=opinion" class="nav__item">Opinion</a>
+      <a href="section?s=sports" class="nav__item">Sports</a>
+      <a href="section?s=reviews" class="nav__item">Reviews</a>
+      <a href="about" class="nav__item">About</a>
+      <a href="archive" class="nav__item">Archive</a>
       <span class="nav__issue" id="navIssue"></span>
       <button class="search-btn" id="searchBtn" aria-label="Search" title="Search (&#8984;K)">
         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4 4" stroke-linecap="round"/></svg>
@@ -101,13 +101,13 @@
       <div>
         <div class="footer__col-title">Sections</div>
         <div class="footer__links">
-          <a href="section.html?s=news">Lincoln News</a>
-          <a href="section.html?s=features">Features</a>
-          <a href="section.html?s=opinion">Opinion</a>
-          <a href="section.html?s=sports">Sports</a>
-          <a href="section.html?s=reviews">Reviews</a>
-          <a href="archive.html">Archive</a>
-          <a href="about.html">About Us</a>
+          <a href="section?s=news">Lincoln News</a>
+          <a href="section?s=features">Features</a>
+          <a href="section?s=opinion">Opinion</a>
+          <a href="section?s=sports">Sports</a>
+          <a href="section?s=reviews">Reviews</a>
+          <a href="archive">Archive</a>
+          <a href="about">About Us</a>
         </div>
       </div>
     </div>
@@ -127,15 +127,15 @@
     <button class="search-overlay__close" id="searchClose" aria-label="Close search">&times;</button>
     <div class="search-overlay__inner">
       <label class="search-overlay__label" for="searchOverlayInput">Search The Railsplitter</label>
-      <form class="search-overlay__form" action="search.html" method="get">
+      <form class="search-overlay__form" action="search" method="get">
         <input class="search-overlay__input" id="searchOverlayInput" name="q" type="search" placeholder="Search articles&hellip;" autocomplete="off">
       </form>
       <div class="search-overlay__hints">
-        <a href="search.html?q=sports" class="search-overlay__hint">Sports</a>
-        <a href="search.html?q=opinion" class="search-overlay__hint">Opinion</a>
-        <a href="search.html?q=features" class="search-overlay__hint">Features</a>
-        <a href="search.html?q=news" class="search-overlay__hint">Lincoln News</a>
-        <a href="search.html?q=reviews" class="search-overlay__hint">Reviews</a>
+        <a href="search?q=sports" class="search-overlay__hint">Sports</a>
+        <a href="search?q=opinion" class="search-overlay__hint">Opinion</a>
+        <a href="search?q=features" class="search-overlay__hint">Features</a>
+        <a href="search?q=news" class="search-overlay__hint">Lincoln News</a>
+        <a href="search?q=reviews" class="search-overlay__hint">Reviews</a>
       </div>
       <p class="search-overlay__shortcut">Press <kbd>Esc</kbd> to close &nbsp;&middot;&nbsp; <kbd>&#8984;K</kbd> to open from anywhere</p>
     </div>
@@ -196,7 +196,7 @@
           '<div class="search-result">' +
             '<div class="search-result__body">' +
               '<span class="label" style="margin-bottom:4px;">' + esc(secLabel) + '</span>' +
-              '<h2 class="search-result__hed"><a href="article.html?id=' + esc(a.id) + '">' + highlight(a.title||'', q) + '</a></h2>' +
+              '<h2 class="search-result__hed"><a href="article?id=' + esc(a.id) + '">' + highlight(a.title||'', q) + '</a></h2>' +
               (a.dek ? '<p class="search-result__dek">' + highlight(a.dek, q) + '</p>' : '') +
               '<p class="search-result__meta">By <strong>' + esc(a.author||'') + '</strong>' + (a.issue ? ' &nbsp;&middot;&nbsp; ' + esc(a.issue) : '') + '</p>' +
             '</div>' +

@@ -41,14 +41,14 @@
   <!-- Navigation -->
   <nav class="nav">
     <div class="nav__inner">
-      <a href="index.html" class="nav__item nav__item--active">Home</a>
-      <a href="section.html?s=news" class="nav__item">Lincoln News</a>
-      <a href="section.html?s=features" class="nav__item">Features</a>
-      <a href="section.html?s=opinion" class="nav__item">Opinion</a>
-      <a href="section.html?s=sports" class="nav__item">Sports</a>
-      <a href="section.html?s=reviews" class="nav__item">Reviews</a>
-      <a href="about.html" class="nav__item">About</a>
-      <a href="archive.html" class="nav__item">Archive</a>
+      <a href="index" class="nav__item nav__item--active">Home</a>
+      <a href="section?s=news" class="nav__item">Lincoln News</a>
+      <a href="section?s=features" class="nav__item">Features</a>
+      <a href="section?s=opinion" class="nav__item">Opinion</a>
+      <a href="section?s=sports" class="nav__item">Sports</a>
+      <a href="section?s=reviews" class="nav__item">Reviews</a>
+      <a href="about" class="nav__item">About</a>
+      <a href="archive" class="nav__item">Archive</a>
       <span class="nav__issue" id="navIssue"></span>
       <button class="search-btn" id="searchBtn" aria-label="Search" title="Search (&#8984;K)">
         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4 4" stroke-linecap="round"/></svg>
@@ -95,13 +95,13 @@
       <div>
         <div class="footer__col-title">Sections</div>
         <div class="footer__links">
-          <a href="section.html?s=news">Lincoln News</a>
-          <a href="section.html?s=features">Features</a>
-          <a href="section.html?s=opinion">Opinion</a>
-          <a href="section.html?s=sports">Sports</a>
-          <a href="section.html?s=reviews">Reviews</a>
-          <a href="archive.html">Archive</a>
-          <a href="about.html">About Us</a>
+          <a href="section?s=news">Lincoln News</a>
+          <a href="section?s=features">Features</a>
+          <a href="section?s=opinion">Opinion</a>
+          <a href="section?s=sports">Sports</a>
+          <a href="section?s=reviews">Reviews</a>
+          <a href="archive">Archive</a>
+          <a href="about">About Us</a>
         </div>
       </div>
     </div>
@@ -121,15 +121,15 @@
     <button class="search-overlay__close" id="searchClose" aria-label="Close search">&times;</button>
     <div class="search-overlay__inner">
       <label class="search-overlay__label" for="searchInput">Search The Railsplitter</label>
-      <form class="search-overlay__form" action="search.html" method="get">
+      <form class="search-overlay__form" action="search" method="get">
         <input class="search-overlay__input" id="searchInput" name="q" type="search" placeholder="Search articles&hellip;" autocomplete="off">
       </form>
       <div class="search-overlay__hints">
-        <a href="search.html?q=sports" class="search-overlay__hint">Sports</a>
-        <a href="search.html?q=opinion" class="search-overlay__hint">Opinion</a>
-        <a href="search.html?q=features" class="search-overlay__hint">Features</a>
-        <a href="search.html?q=news" class="search-overlay__hint">Lincoln News</a>
-        <a href="search.html?q=reviews" class="search-overlay__hint">Reviews</a>
+        <a href="search?q=sports" class="search-overlay__hint">Sports</a>
+        <a href="search?q=opinion" class="search-overlay__hint">Opinion</a>
+        <a href="search?q=features" class="search-overlay__hint">Features</a>
+        <a href="search?q=news" class="search-overlay__hint">Lincoln News</a>
+        <a href="search?q=reviews" class="search-overlay__hint">Reviews</a>
       </div>
       <p class="search-overlay__shortcut">Press <kbd>Esc</kbd> to close &nbsp;&middot;&nbsp; <kbd>&#8984;K</kbd> to open from anywhere</p>
     </div>
@@ -214,14 +214,14 @@
           '<article class="hero__main">' +
             '<span class="label">' + esc(st(ha.section)) + '</span>' +
             '<div class="hero__img">' +
-              '<a href="article.html?id=' + esc(ha.id) + '">' +
+              '<a href="article?id=' + esc(ha.id) + '">' +
                 imgOrPh(ha, 'height:100%;min-height:300px;') +
               '</a>' +
             '</div>' +
-            '<h2 class="hero__headline"><a href="article.html?id=' + esc(ha.id) + '">' + esc(ha.title) + '</a></h2>' +
+            '<h2 class="hero__headline"><a href="article?id=' + esc(ha.id) + '">' + esc(ha.title) + '</a></h2>' +
             '<p class="hero__meta">By <strong>' + esc(ha.author) + '</strong>' + (ha.issue ? ' &nbsp;&middot;&nbsp; ' + esc(ha.issue) : '') + '</p>' +
             (ha.dek ? '<p class="hero__dek">' + esc(ha.dek) + '</p>' : '') +
-            '<a href="article.html?id=' + esc(ha.id) + '" class="read-more">Read the full story &rsaquo;</a>' +
+            '<a href="article?id=' + esc(ha.id) + '" class="read-more">Read the full story &rsaquo;</a>' +
           '</article>';
       }
 
@@ -233,7 +233,7 @@
         asideHTML +=
           '<div class="hero__aside-item">' +
             '<span class="label">' + esc(st(a.section)) + '</span>' +
-            '<h3 class="hero__aside-hed"><a href="article.html?id=' + esc(a.id) + '">' + esc(a.title) + '</a></h3>' +
+            '<h3 class="hero__aside-hed"><a href="article?id=' + esc(a.id) + '">' + esc(a.title) + '</a></h3>' +
             '<p class="hero__meta">By <strong>' + esc(a.author) + '</strong></p>' +
             (a.dek ? '<p class="hero__aside-dek">' + esc(a.dek) + '</p>' : '') +
           '</div>';
@@ -257,17 +257,17 @@
           '<section>' +
             '<div class="sec-head">' +
               '<h2 class="sec-head__title">' + esc(st(slug)) + '</h2>' +
-              '<a href="section.html?s=' + esc(slug) + '" class="sec-head__more">All ' + esc(st(slug)) + ' &rsaquo;</a>' +
+              '<a href="section?s=' + esc(slug) + '" class="sec-head__more">All ' + esc(st(slug)) + ' &rsaquo;</a>' +
             '</div>' +
             '<div class="grid-3">';
         secArticles.forEach(function(a) {
           previewHTML +=
             '<article class="card">' +
-              '<a href="article.html?id=' + esc(a.id) + '" class="card__img">' +
+              '<a href="article?id=' + esc(a.id) + '" class="card__img">' +
                 imgOrPh(a, 'aspect-ratio:3/2;') +
               '</a>' +
               '<span class="label">' + esc(st(slug)) + '</span>' +
-              '<h3 class="card__hed"><a href="article.html?id=' + esc(a.id) + '">' + esc(a.title) + '</a></h3>' +
+              '<h3 class="card__hed"><a href="article?id=' + esc(a.id) + '">' + esc(a.title) + '</a></h3>' +
               '<p class="card__meta">By <strong>' + esc(a.author) + '</strong></p>' +
               (a.dek ? '<p class="card__dek">' + esc(a.dek) + '</p>' : '') +
             '</article>';

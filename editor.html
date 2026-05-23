@@ -436,7 +436,7 @@ var App = {
       if (issue.coverArticle === id) refs.push('Issue cover: ' + issue.title);
     });
     var b = App.state.content.breaking;
-    if (b && b.link === 'article.html?id=' + id) {
+    if (b && b.link === 'article?id=' + id) {
       refs.push('Breaking news banner link');
     }
 
@@ -471,7 +471,7 @@ var App = {
     (App.state.content.issues || []).forEach(function(issue) {
       if (issue.coverArticle === id) issue.coverArticle = null;
     });
-    if (b && b.link === 'article.html?id=' + id) {
+    if (b && b.link === 'article?id=' + id) {
       b.link = '';
     }
 
@@ -1429,7 +1429,7 @@ App.views.issues = {
 
     document.querySelectorAll('.issue-print').forEach(function(btn) {
       btn.addEventListener('click', function() {
-        window.open('print.html?issue=' + encodeURIComponent(btn.dataset.id), '_blank');
+        window.open('print?issue=' + encodeURIComponent(btn.dataset.id), '_blank');
       });
     });
 
@@ -1694,8 +1694,8 @@ App.views.breaking = {
 
     var articles = App.state.content.articles.filter(function(a) { return a.published; });
     var artOptions = '<option value="">— No link —</option>' + articles.map(function(a) {
-      var selected = b.link === ('article.html?id=' + a.id) ? ' selected' : '';
-      return '<option value="article.html?id=' + App.esc(a.id) + '"' + selected + '>' + App.esc(a.title) + '</option>';
+      var selected = b.link === ('article?id=' + a.id) ? ' selected' : '';
+      return '<option value="article?id=' + App.esc(a.id) + '"' + selected + '>' + App.esc(a.title) + '</option>';
     }).join('');
 
     document.getElementById('contentArea').innerHTML =

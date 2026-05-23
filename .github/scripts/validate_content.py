@@ -253,7 +253,7 @@ def validate_breaking(breaking):
         return
     require_bool(breaking, "active", p)
     require_str(breaking, "text", p)
-    require_str(breaking, "link", p)
+    require_str(breaking, "link", p, nonempty=breaking.get("active", False))
 
 
 # ---------------------------------------------------------------------------

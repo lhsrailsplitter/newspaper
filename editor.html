@@ -932,6 +932,9 @@ App.views.articleEditor = {
           '</div>' +
           '<div class="field"><label>Photo Credit</label><input type="text" id="f-credit" value="' + App.esc(a.credit) + '"></div>' +
         '</div></div>' +
+      '</div>' +
+      '<div style="margin-top:24px;padding-top:16px;border-top:1px solid #e8e5e0;">' +
+        '<button class="btn btn-danger" id="deleteArticleBtn" style="font-size:13px;">Delete Article</button>' +
       '</div>';
 
     document.querySelectorAll('.rt-btn[data-cmd]').forEach(function(btn) {
@@ -1095,6 +1098,15 @@ App.views.articleEditor = {
 
     document.getElementById('saveDraftBtn').addEventListener('click', function() { collectAndSave(false); });
     document.getElementById('publishBtn').addEventListener('click', function() { collectAndSave(true); });
+    document.getElementById('deleteArticleBtn').addEventListener('click', function() {
+      var id = App.state.articleId;
+      App.deleteArticle(id).then(function() {
+        App.showSuccess('Article deleted.');
+        App.router.navigate('articles');
+      }).catch(function(err) {
+        App.handleApiError(err);
+      });
+    });
   }
 };
 

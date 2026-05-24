@@ -2599,25 +2599,35 @@
   "homepage": {
     "hero": "article-1747700000001",
     "heroAside": [
-      "article-1747700000001",
-      "article-1747700000002",
-      "article-1747700000003"
+      "article-1747700000005",
+      "article-1747700000013",
+      "article-1747700000007"
     ],
     "sections": {
       "news": [
-        "article-1747700000001"
+        "article-1747700000002",
+        "article-1779609116065",
+        "article-1779609116067"
       ],
       "features": [
-        "article-1747700000000"
+        "article-1747700000000",
+        "article-1747700000014",
+        "article-1779609116045"
       ],
       "opinion": [
-        "article-1747700000007"
+        "article-1747700000011",
+        "article-1779609116049",
+        "article-1779609116059"
       ],
       "sports": [
-        "article-1747700000003"
+        "article-1747700000003",
+        "article-1747700000004",
+        "article-1779609116082"
       ],
       "reviews": [
-        "article-1747700000006"
+        "article-1747700000006",
+        "article-1747700000012",
+        "article-1779609116087"
       ]
     }
   },

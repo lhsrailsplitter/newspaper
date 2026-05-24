@@ -437,7 +437,12 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    api_key = os.environ.get('GEMINI_API_KEY', 'AIzaSyCe1eJyvKVZw5Y3SSgQDx70GbpJ4RtIhNo')
+    api_key = os.environ.get('GEMINI_API_KEY', '')
+    if not api_key:
+        print('Error: GEMINI_API_KEY environment variable not set.')
+        print('  Get a key at https://aistudio.google.com/ and run:')
+        print('  GEMINI_API_KEY=<key> python3 gemini_extract.py ...')
+        sys.exit(1)
 
     # PDF check
     pdf_path = Path(args.pdf)

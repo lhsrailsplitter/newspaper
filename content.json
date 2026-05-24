@@ -28,18 +28,6 @@
   ],
   "issues": [
     {
-      "id": "issue-7",
-      "title": "Issue 7",
-      "date": "May 2026",
-      "coverArticle": "article-1747700000001"
-    },
-    {
-      "id": "issue-5",
-      "title": "Issue 5",
-      "date": "Spring 2026",
-      "coverArticle": "article-1779583418789"
-    },
-    {
       "id": "issue-3",
       "title": "Issue 3",
       "date": "December 2025",
@@ -52,10 +40,22 @@
       "coverArticle": "article-1779608816603"
     },
     {
+      "id": "issue-5",
+      "title": "Issue 5",
+      "date": "Spring 2026",
+      "coverArticle": "article-1779583418789"
+    },
+    {
       "id": "issue-6",
       "title": "Issue 6",
       "date": "April 2026",
       "coverArticle": "article-1779609116044"
+    },
+    {
+      "id": "issue-7",
+      "title": "Issue 7",
+      "date": "May 2026",
+      "coverArticle": "article-1747700000001"
     }
   ],
   "articles": [

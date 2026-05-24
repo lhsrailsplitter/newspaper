@@ -8,7 +8,7 @@ Plain HTML/CSS/JS — no framework, no build step. Open any `.html` file in a br
 
 Go to `editor.html`, sign in with your GitHub personal access token, and you're in. Changes push directly to this repo as commits.
 
-You need to be in the `lhsrailsplitter` org first — ask your advisor.
+You need to be in the `lhsrailsplitter` org first, ask Skramstad first
 
 ## Running locally
 

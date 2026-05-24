@@ -15,3 +15,6 @@ You need to be in the `lhsrailsplitter` org first — ask your advisor.
 ```bash
 python3 -m http.server
 ```
+
+## Credits
+Site design and engineering by [Ryan Lu](https://github.com/luryann).

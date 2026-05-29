@@ -148,20 +148,6 @@
       "photo": "photos/article-source-track.jpg"
     },
     {
-      "id": "article-source-kpop",
-      "title": "BTS/Kpop Comeback",
-      "author": "Miranda Garcia",
-      "section": "reviews",
-      "issue": "Issue 7, May 2026",
-      "issueId": "issue-7",
-      "dek": "BTS, a South Korean KPOP band had a comeback on March 20 2026 after not playing with all seven members in over five years. The reason for the absence was due to the military service required in South…",
-      "body": "<p>BTS, a South Korean KPOP band had a comeback on March 20 2026 after not playing with all seven members in over five years. The reason for the absence was due to the military service required in South Korea.</p>\n<p>The Album has 14 songs which each have different genres, including pop-rock, pop-rap, trap and R&B. However, it has also caused some controversy because it doesn’t seem “like BTS” to some fanatics. One of the most criticized songs is ‘Swim’ and ‘Fiya’.</p>\n<p>Although it is criticized, the album has some hits that are pretty good such as the song “They Don’t Know ‘Bout Us”.</p>",
-      "ph": "img-ph--reviews",
-      "credit": "Railsplitter Staff",
-      "published": true,
-      "photo": "photos/article-source-kpop.jpg"
-    },
-    {
       "id": "article-source-xbox",
       "title": "The Decline of Console Gaming",
       "author": "Yew Yu",
@@ -258,7 +244,7 @@
         "article-source-baseball"
       ],
       "reviews": [
-        "article-source-kpop",
+        null,
         "article-source-xbox",
         "article-source-videogames"
       ]

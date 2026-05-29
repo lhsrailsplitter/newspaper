@@ -120,20 +120,6 @@
       "photo": "photos/article-source-wbc.jpg"
     },
     {
-      "id": "article-source-track",
-      "title": "Track Takes the Field",
-      "author": "Isabella Brown",
-      "section": "sports",
-      "issue": "Issue 7, May 2026",
-      "issueId": "issue-7",
-      "dek": "The 2026 track and field season has officially begun. Coach Rattay is the head coach for sprinters and shot putters, and Coach Subuyuj coaches long distance. The entire track and field team consists o…",
-      "body": "<p>The 2026 track and field season has officially begun. Coach Rattay is the head coach for sprinters and shot putters, and Coach Subuyuj coaches long distance. The entire track and field team consists of about 60 athletes.</p>\n<p>Coach Rattay has been coaching at Lincoln for many years and in different sports as well. He is passionate in what he does, and encourages others to do their best, simultaneously gaining confidence. Coach Rattay has noted that the team has gotten smaller as the season went on. He has lost some of his best sprinters. This does not stop Coach Rattay from inspiring his runners to improve and challenge themselves.</p>\n<p>Coach Subuyuj has consistently motivated his students to strive for higher times and even some that seem impossible. There have been two preseason track meets, and one official track meet. The coaches as well as the athletes say they are most excited to compete against Wilson because they are the rival school, but also Eagle Rock because they bring competition. Another competitive school, Bravo, has a very large and competitive long distance team, and our distance team is excited to compete against them.</p>\n<p>Layla has shown that she is capable of achieving faster times and being a team player, helping out her fellow teammates. Keiana Douglas is only a freshman and most definitely a talented runner. She competes with other varsity athletes in the hurdle races and does extremely well. Diego Salgado is one of the fastest long distance runners, won many of his races, and is recognized by his coaches. It is highly suggested that everyone should go to a track meet and support all Lincoln athletes.</p>\n<blockquote><p>There are three players being spotlighted for their incredible hard work and training: Layla Velazquez, Keiana Douglas and Diego Salgado.</p></blockquote>",
-      "ph": "img-ph--sports",
-      "credit": "Railsplitter Staff",
-      "published": true,
-      "photo": "photos/article-source-track.jpg"
-    },
-    {
       "id": "article-source-xbox",
       "title": "The Decline of Console Gaming",
       "author": "Yew Yu",
@@ -212,7 +198,7 @@
         "article-source-fakenews"
       ],
       "sports": [
-        "article-source-track",
+        null,
         null,
         "article-source-baseball"
       ],

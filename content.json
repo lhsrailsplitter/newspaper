@@ -120,20 +120,6 @@
       "photo": "photos/article-source-wbc.jpg"
     },
     {
-      "id": "article-source-volleyball",
-      "title": "Boys Volleyball Gets the W",
-      "author": "The Railsplitter Staff",
-      "section": "sports",
-      "issue": "Issue 7, May 2026",
-      "issueId": "issue-7",
-      "dek": "Lincoln lost to Wilson back in March and unfortunately they wound up with the same result on Thursday. The Tigers fell just short of the Mules by a score of 3-2. The Tigers have now taken an 'L' in ba…",
-      "body": "<p>Lincoln lost to Wilson back in March and unfortunately they wound up with the same result on Thursday. The Tigers fell just short of the Mules by a score of 3-2. The Tigers have now taken an 'L' in back-to-back matches. Lincoln took a 2-1 lead headed into the fourth set, but sadly they lost the next two. The match finished with set scores of 25-23, 23-25, 18-25, 25-16, 15-13.</p>\n<p>It was a great game when Lincoln took on Franklin on Thursday. The Tigers walked away with a 3-1 victory over the Panthers. The Tigers haven't had any issues with the Panthers recently, as the game was their sixth consecutive win against them. While Lincoln might've won, it sure wasn't easy: Franklin scored at least 20 points in every set they played. The final score came out to 25-22, 23-25, 25-23, 25-20. Lincoln now has a winning record of 6-4.</p>",
-      "ph": "img-ph--sports",
-      "credit": "Railsplitter Staff",
-      "published": true,
-      "photo": "photos/article-source-volleyball.jpg"
-    },
-    {
       "id": "article-source-track",
       "title": "Track Takes the Field",
       "author": "Isabella Brown",
@@ -227,7 +213,7 @@
       ],
       "sports": [
         "article-source-track",
-        "article-source-volleyball",
+        null,
         "article-source-baseball"
       ],
       "reviews": [

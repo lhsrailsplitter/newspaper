@@ -202,19 +202,6 @@
       "credit": "Railsplitter Staff",
       "published": true,
       "photo": "photos/article-source-fakenews.jpg"
-    },
-    {
-      "id": "article-source-springthings",
-      "title": "Spring Things to Do in LA",
-      "author": "Audrie Ozuna",
-      "section": "features",
-      "issue": "Issue 7, May 2026",
-      "issueId": "issue-7",
-      "dek": "Hey Tigers! Spring is here — here are some currently trending things you can do around Los Angeles.",
-      "body": "<p>Hey Tigers! Spring is here which means the weather is getting a little warmer and closer to summer. So as the flowers bloom, here are some currently trending things you can do!</p>\n<p>Start with a trip to a nice cafe — try Community Goods, Olive and James Cafe Tea in West Hollywood; Memory Look, DAMO, Rok, and Stagger in Koreatown; or Archives Of Us in Chinatown for an iced matcha latte.</p>\n<p>After that, visit The Academy Museum of Motion Picture. It is free entry for students — just bring your student ID. Great if you have an interest in movies, film, or behind the scenes.</p>\n<p>If that's not your vibe, check out the Getty Museum or Getty Villa. One overlooks the coast, the other the westside of Los Angeles. Both are free entry — you only pay for parking.</p>",
-      "ph": "img-ph--features",
-      "credit": "Railsplitter Staff",
-      "published": true
     }
   ],
   "homepage": {
@@ -231,7 +218,7 @@
       ],
       "features": [
         "article-source-prom",
-        "article-source-springthings",
+        null,
         "article-source-cat"
       ],
       "opinion": [

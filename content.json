@@ -106,20 +106,6 @@
       "photo": "photos/article-source-baseball.jpg"
     },
     {
-      "id": "article-source-wbc",
-      "title": "World Baseball Classic: Team USA loses 3-2 in a dramatic final in Miami.",
-      "author": "Ruby Campos",
-      "section": "sports",
-      "issue": "Issue 7, May 2026",
-      "issueId": "issue-7",
-      "dek": "Venezuela won their first-ever World Baseball Classic (WBC) title in 2026, defeating Team USA 3-2 in a dramatic final in Miami. The World Baseball Classic showcased the best of international baseball…",
-      "body": "<p>Venezuela won their first-ever World Baseball Classic (WBC) title in 2026, defeating Team USA 3-2 in a dramatic final in Miami. The World Baseball Classic showcased the best of international baseball and brought together the best 20 national teams from around the world to compete in one tournament. The competitions were held from March 5th to the 17th across Tokyo, San Juan, Houston, and Miami. The WBC featured some of the best players from in the MLB as well as seventeen year olds playing for the first time.</p>\n<p>The competition is divided into 4 different stages. The first stage of the tournament is called pool play where the 20 teams are split into 4 pools of 5. The teams that played in Pool A were Puerto Rico, Cuba, Canada, Panama, Colombia and they all played in San Juan. Pool B had teams like USA, Italy, Mexico, Great Britain, Brazil and played in Houston. Pool C had Japan, Netherlands, Australia, Korea, Czechia and played in Japan. Lastly pool D had Dominican Republic, Venezuela, Israel, Nicaragua, Chinese Taipei playing in Miami. Ultimately pool play determines which teams will advance. Each team faces every other team one time in their group and only the top two teams from each pool moves on based on wins, and tie breakers are determined by who has the best run differential, so it’s important to score more runs to advance.</p>\n<p>The second stage of the WBC was the quarterfinals where the eight teams that advanced played in a single elimination game. With matchups like the Dominican Republic vs. South Korea, the United States vs. Canada, Italy vs. Puerto Rico, and Japan vs. Venezuela. The Dominican Republic and the USA moved on as expected. While Venezuela shocked the world by defeating the defending champions Japan. Italy also kept their surprising winning streak alive by winning their match ups.</p>\n<p>The third stage of the WBC is the semifinals where the remaining 4 teams played each other to see who will advance to the championship game. Venezuela continued its historic streak by defeating Italy to finally advance to their first WBC final ever. Meanwhile, the USA beat the Dominican Republic in a close match to earn its 3rd straight trip to the championship game.</p>\n<p>In the final stage of the WBC Venezuela stunned the USA with a 3-2 victory at LoanDepot Park in Miami to win its first WBC title ever. Venezuela looked to lead early on and the USA did briefly tie the game late, but Venezuela had a key go ahead rbi in the 9th inning giving them the win. The win marked a historic moment for Venezuela baseball and capped an exciting tournament full of upsets and dramatic moments.</p>",
-      "ph": "img-ph--sports",
-      "credit": "Railsplitter Staff",
-      "published": true,
-      "photo": "photos/article-source-wbc.jpg"
-    },
-    {
       "id": "article-source-xbox",
       "title": "The Decline of Console Gaming",
       "author": "Yew Yu",
@@ -179,7 +165,7 @@
   "homepage": {
     "hero": null,
     "heroAside": [
-      "article-source-wbc",
+      null,
       "article-source-acadeca",
       "article-source-fakenews"
     ],

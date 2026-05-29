@@ -64,20 +64,6 @@
       "photo": "photos/article-source-piday.jpg"
     },
     {
-      "id": "article-source-prom",
-      "title": "Strike a Pose: Prom Fashion Show",
-      "author": "Sophia Miranda",
-      "section": "features",
-      "issue": "Issue 7, May 2026",
-      "issueId": "issue-7",
-      "dek": "With prom season upon us, our senior class has thought of a great way to sneak peak what the prom fashions will look like this year. With the prom theme this year being “Upper East Side New York\", the…",
-      "body": "<p>With prom season upon us, our senior class has thought of a great way to sneak peak what the prom fashions will look like this year. With the prom theme this year being “Upper East Side New York\", the prom fashion show is to show off our beautiful and handsome senior class dressed up in their prom attire.</p>\n<p>With their beautiful dresses and suits we are sure to be in for a high fashion prom. The light and music set-up simulated a real fashion show one might see in the Upper East Side. Coordinated by our senior cabinet committee, Senior Class president Ivy Chieng said, “It gave me a different perspective on how seniors feel about prom and how this show excited the senior class to want to go to prom and it was very heartwarming to hear such positives comments about our show and we as a cabinet committee were very pleased with the positive feedback from everyone.”</p>\n<p>With the show happening every year the senior class is committed to making a great experience for the seniors to excite them for their special night. Excitement for prom is through the roof, and it’s sure to deliver.</p>\n<blockquote><p>“I think the show went very well, and we had a great turn out and we were so happy to have so many people involved.” - Senior Noel Mendoza</p></blockquote>",
-      "ph": "img-ph--features",
-      "credit": "Railsplitter Staff",
-      "published": true,
-      "photo": "photos/article-source-prom.jpg"
-    },
-    {
       "id": "article-source-cat",
       "title": "The Real Life Mascot",
       "author": "Sophia Miranda",
@@ -161,7 +147,7 @@
         "article-source-piday"
       ],
       "features": [
-        "article-source-prom",
+        null,
         null,
         "article-source-cat"
       ],

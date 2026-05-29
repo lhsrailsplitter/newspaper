@@ -92,20 +92,6 @@
       "photo": "photos/article-source-cat.jpg"
     },
     {
-      "id": "article-source-baseball",
-      "title": "Tiger Baseball Comes Roaring Back",
-      "author": "The Railsplitter Staff",
-      "section": "sports",
-      "issue": "Issue 7, May 2026",
-      "issueId": "issue-7",
-      "dek": "Lincoln bounced back after a loss on the road last Friday to Fremont. They blew past the Santee Falcons 9-1 on Thursday. That large 9-1 mark stands out as the most commanding margin for the Tigers yet…",
-      "body": "<p>Lincoln bounced back after a loss on the road last Friday to Fremont. They blew past the Santee Falcons 9-1 on Thursday. That large 9-1 mark stands out as the most commanding margin for the Tigers yet this season. Paul Martinez and Andrew Ayon were standout players at the plate. Paul went 2-for-4 with three RBI, one stolen base, and one run, while Andrew earned two runs and four stolen bases. Andrew has now snagged at least one in each of the last four games he's played. Another player making a difference was Bryant Guitron, who went 1-for-2 with two RBI. Lincoln now has a record of 3-4. However, on Friday, April 10, Lincoln came up short against Marshall and fell 5-1.</p>",
-      "ph": "img-ph--sports",
-      "credit": "Railsplitter Staff",
-      "published": true,
-      "photo": "photos/article-source-baseball.jpg"
-    },
-    {
       "id": "article-source-xbox",
       "title": "The Decline of Console Gaming",
       "author": "Yew Yu",
@@ -186,7 +172,7 @@
       "sports": [
         null,
         null,
-        "article-source-baseball"
+        null
       ],
       "reviews": [
         null,

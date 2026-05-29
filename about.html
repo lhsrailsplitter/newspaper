@@ -9,6 +9,9 @@
   <meta property="og:description" content="The Railsplitter is Lincoln High School's official student newspaper — Los Angeles, CA.">
   <meta property="og:type" content="website">
   <link rel="stylesheet" href="styles.css">
+  <script>
+  (function(){var s={};try{s=JSON.parse(localStorage.getItem('railsplitter_tweaks')||'{}');}catch(e){}var r=document.documentElement;var t={Classic:{'--f-display':"'Playfair Display', Georgia, serif",'--f-body':"Georgia, serif",'--f-sans':"'Source Sans 3', system-ui, sans-serif"},Modern:{'--f-display':"'DM Sans', system-ui, sans-serif",'--f-body':"'DM Sans', system-ui, sans-serif",'--f-sans':"'DM Sans', system-ui, sans-serif"},Slab:{'--f-display':"'Roboto Slab', Georgia, serif",'--f-body':"'Roboto Slab', Georgia, serif",'--f-sans':"'Roboto Condensed', system-ui, sans-serif"}};var b={Paper:{'--c-bg':'#F5F2EC','--c-surface':'#EDE9E0'},White:{'--c-bg':'#FFFFFF','--c-surface':'#F4F4F4'},Slate:{'--c-bg':'#1A1A1E','--c-surface':'#242428','--c-ink':'#E8E6E0','--c-muted':'#9A9894','--c-rule':'rgba(255,255,255,.1)'}};var d={Compact:{'--gap':'20px','--x-pad':'20px','--max-w':'1100px'},Comfortable:{'--gap':'32px','--x-pad':'24px','--max-w':'1160px'},Spacious:{'--gap':'48px','--x-pad':'32px','--max-w':'1240px'}};if(s.accent)r.style.setProperty('--c-orange',s.accent);if(s.type&&t[s.type])Object.entries(t[s.type]).forEach(function(kv){r.style.setProperty(kv[0],kv[1]);});if(s.bg&&b[s.bg])Object.entries(b[s.bg]).forEach(function(kv){r.style.setProperty(kv[0],kv[1]);});if(s.density&&d[s.density])Object.entries(d[s.density]).forEach(function(kv){r.style.setProperty(kv[0],kv[1]);});})();
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -234,6 +237,95 @@
       if (e.key === 'Escape') sOverlay.classList.remove('open');
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); sOverlay.classList.add('open'); setTimeout(function() { sInput.focus(); }, 50); }
     });
+  </script>
+
+  <!-- Tweaks Panel -->
+  <button class="tweaks-fab" id="tweaksFab" aria-label="Customize appearance" title="Customize">&#9998;</button>
+  <div class="tweaks-panel" id="tweaksPanel">
+    <div class="tweaks-panel__heading">Customize</div>
+    <div class="tweaks-group">
+      <div class="tweaks-group__label">Accent</div>
+      <div class="tweaks-swatches" id="accentSwatches"></div>
+    </div>
+    <div class="tweaks-group">
+      <div class="tweaks-group__label">Typography</div>
+      <div class="tweaks-chips" id="typeChips"></div>
+    </div>
+    <div class="tweaks-group">
+      <div class="tweaks-group__label">Background</div>
+      <div class="tweaks-chips" id="bgChips"></div>
+    </div>
+    <div class="tweaks-group">
+      <div class="tweaks-group__label">Density</div>
+      <div class="tweaks-chips" id="densityChips"></div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      var root = document.documentElement;
+      var KEY = 'railsplitter_tweaks';
+      var saved = {};
+      try { saved = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e){}
+      var accents = [
+        { label:'Burnt Orange', value:'#c85500' },
+        { label:'Navy Blue',    value:'#1a3a5c' },
+        { label:'Forest Green', value:'#2d5a27' },
+        { label:'Crimson',      value:'#9b1c1c' }
+      ];
+      var typeMap = {
+        Classic: { '--f-display':"'Playfair Display', Georgia, serif", '--f-body':"Georgia, serif", '--f-sans':"'Source Sans 3', system-ui, sans-serif" },
+        Modern:  { '--f-display':"'DM Sans', system-ui, sans-serif",   '--f-body':"'DM Sans', system-ui, sans-serif", '--f-sans':"'DM Sans', system-ui, sans-serif" },
+        Slab:    { '--f-display':"'Roboto Slab', Georgia, serif",       '--f-body':"'Roboto Slab', Georgia, serif",   '--f-sans':"'Roboto Condensed', system-ui, sans-serif" }
+      };
+      var bgMap = {
+        Paper: { '--c-bg':'#F5F2EC', '--c-surface':'#EDE9E0' },
+        White: { '--c-bg':'#FFFFFF', '--c-surface':'#F4F4F4' },
+        Slate: { '--c-bg':'#1A1A1E', '--c-surface':'#242428', '--c-ink':'#E8E6E0', '--c-muted':'#9A9894', '--c-rule':'rgba(255,255,255,.1)' }
+      };
+      var densityMap = {
+        Compact:     { '--gap':'20px', '--x-pad':'20px', '--max-w':'1100px' },
+        Comfortable: { '--gap':'32px', '--x-pad':'24px', '--max-w':'1160px' },
+        Spacious:    { '--gap':'48px', '--x-pad':'32px', '--max-w':'1240px' }
+      };
+      function save(k, v) { saved[k] = v; try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch(e){} }
+      var swCont = document.getElementById('accentSwatches');
+      accents.forEach(function(ac) {
+        var btn = document.createElement('button');
+        btn.className = 'tweaks-swatch' + (saved.accent === ac.value ? ' active' : '');
+        btn.title = ac.label; btn.style.background = ac.value;
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('.tweaks-swatch').forEach(function(b){ b.classList.remove('active'); });
+          btn.classList.add('active');
+          root.style.setProperty('--c-orange', ac.value); save('accent', ac.value);
+        });
+        swCont.appendChild(btn);
+      });
+      function makeChips(containerId, map, saveKey) {
+        var cont = document.getElementById(containerId);
+        Object.keys(map).forEach(function(name) {
+          var btn = document.createElement('button');
+          btn.className = 'tweaks-chip' + (saved[saveKey] === name ? ' active' : '');
+          btn.textContent = name;
+          btn.addEventListener('click', function() {
+            cont.querySelectorAll('.tweaks-chip').forEach(function(b){ b.classList.remove('active'); });
+            btn.classList.add('active');
+            Object.entries(map[name]).forEach(function(kv){ root.style.setProperty(kv[0],kv[1]); });
+            save(saveKey, name);
+          });
+          cont.appendChild(btn);
+        });
+      }
+      makeChips('typeChips', typeMap, 'type');
+      makeChips('bgChips', bgMap, 'bg');
+      makeChips('densityChips', densityMap, 'density');
+      var fab = document.getElementById('tweaksFab');
+      var panel = document.getElementById('tweaksPanel');
+      fab.addEventListener('click', function() { panel.classList.toggle('open'); });
+      document.addEventListener('click', function(e) {
+        if (!panel.contains(e.target) && e.target !== fab) panel.classList.remove('open');
+      });
+    })();
   </script>
 </body>
 </html>

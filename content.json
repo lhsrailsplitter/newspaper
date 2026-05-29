@@ -227,20 +227,6 @@
       "photo": "photos/article-1747700000011.jpg"
     },
     {
-      "id": "article-1747700000013",
-      "title": "BTS Returns After Five Years With New Album",
-      "author": "Miranda Garcia",
-      "section": "features",
-      "issue": "Issue 7, May 2026",
-      "issueId": "issue-7",
-      "dek": "The K-pop group reunites following mandatory military service with a 14-track album spanning multiple genres.",
-      "body": "<p>BTS, a South Korean KPOP band had a comeback on March 20 2026 after not playing with all seven members in over five years and their last album being released in 2020. The reason for the absence was due to the military service that is required in South Korea. The Album has 14 songs which each have different genres, and because of this, it is a more interesting album. The genres are pop-rock, pop-rap, trap and R&B, although, because of the different genres, it has also caused some controversy because it doesn't seem \"like BTS\" as many on the internet have said. One of the most criticized songs of the moment is the song 'Swim' and 'Fiya' since they do not really match with what fanatics were expecting. Some have said it doesn't really relate to their older music. Many expected their music genre to match the songs of 2016 such as 'SAVE ME' or 'Blood, Sweat and Tears' yet it didn't have much comparison. Although it is criticized, the album has some hits that are pretty good such as the song \"They Don't Know 'Bout Us\" which is somewhat new to the kind of music that they originally released.</p>",
-      "ph": "img-ph--features",
-      "credit": "The Railsplitter",
-      "published": true,
-      "photo": "photos/article-1747700000013.jpg"
-    },
-    {
       "id": "article-1747700000014",
       "title": "Meet Our Campus Mascot: The Little Tiger Cat",
       "author": "Sophia Miranda",
@@ -2586,7 +2572,7 @@
     "hero": "article-1747700000001",
     "heroAside": [
       "article-1747700000005",
-      "article-1747700000013",
+      null,
       "article-1747700000007"
     ],
     "sections": {
